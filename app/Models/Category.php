@@ -19,4 +19,8 @@ class Category extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public function products(){
+        return $this->belongsToMany(Product::class);
+   }
 }

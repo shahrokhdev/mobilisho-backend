@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'articles' => 'مقالات',
     'users' => 'کاربران',
     'categories' => 'دسته بندی ها',
     'products' => 'محصولات',

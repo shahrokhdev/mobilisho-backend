@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'articles' => 'articles',
     'users' => 'users',
     'categories' => 'categories',
     'products' => 'products',

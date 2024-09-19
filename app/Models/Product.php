@@ -18,4 +18,8 @@ class Product extends Model
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
     }
+
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+   }
 }
