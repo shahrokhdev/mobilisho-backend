@@ -2,6 +2,7 @@
 
 return [
     'users' => 'users',
+    'categories' => 'categories',
     'name' => 'name',
     'email' => 'email',
     'password' => 'password',
@@ -10,5 +11,6 @@ return [
     'state' => 'state',
     'status' => 'status',
     'created_at' => "created_at",
-    'updated_at' => "updated_at"
+    'updated_at' => "updated_at",
+    'image' => "image"
 ];

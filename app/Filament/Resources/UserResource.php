@@ -28,7 +28,7 @@ class UserResource extends Resource
 
      public static function getNavigationLabel(): string
     {
-        return __(key: 'users.users');
+        return __(key: 'general.users');
     }
 
     public static function form(Form $form): Form
@@ -38,38 +38,38 @@ class UserResource extends Resource
                      TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                     ->label(__("users.name")),
+                     ->label(__("general.name")),
 
                      TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255)
-                    ->label(__(key: "users.email")),
+                    ->label(__(key: "general.email")),
 
                     TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->required()
-                    ->label(__(key: "users.password"))
+                    ->label(__(key: "general.password"))
                     ->maxLength(255),
 
                      TextInput::make('username')
                     ->required()
-                    ->label(__(key: "users.username"))
+                    ->label(__(key: "general.username"))
                     ->maxLength(255),
 
                      TextInput::make('phone_number')
                     ->required()
                     ->unique()
                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
-                    ->label(__(key: "users.phone_number"))
+                    ->label(__(key: "general.phone_number"))
                     ->maxLength(11),
 
                     Select::make('state')
                     ->options([
                         'active' => 'active',
                         'inActive' => 'inActive',
-                    ])->label(__(key: "users.state"))
+                    ])->label(__(key: "general.state"))
               
             ]);
     }
@@ -81,39 +81,39 @@ class UserResource extends Resource
                      TextColumn::make('name')
                     ->searchable(isIndividual:true)
                     ->sortable()
-                    ->label(__("users.name")),
+                    ->label(__("general.name")),
 
                      TextColumn::make('email')
                     ->searchable(isIndividual:true)
                     ->sortable()
-                    ->label(__("users.email")),
+                    ->label(__("general.email")),
 
                      TextColumn::make('username')
                      ->sortable()
                      ->searchable(isIndividual:true)
-                     ->label(__("users.username")),
+                     ->label(__("general.username")),
 
                      TextColumn::make('phone_number')
                      ->searchable(isIndividual:true)
-                     ->label(__("users.phone_number")),
+                     ->label(__("general.phone_number")),
 
                      TextColumn::make('state')
                     ->searchable(isIndividual:true)
                     ->sortable()
-                    ->label(__("users.state")),
+                    ->label(__("general.state")),
 
                      TextColumn::make('created_at')
                     ->dateTime()
                     ->searchable(isIndividual:true)
                     ->sortable()
-                    ->label(__("users.created_at")),
+                    ->label(__("general.created_at")),
                   
 
                      TextColumn::make('updated_at')
                     ->dateTime()
                     ->searchable(isIndividual:true)
                     ->sortable()
-                    ->label(__("users.updated_at")),
+                    ->label(__("general.updated_at")),
 
             ])
             ->filters([
