@@ -8,10 +8,11 @@ use Pishran\LaravelPersianSlug\HasPersianSlug;
 use Spatie\Sluggable\SlugOptions;
 class Category extends Model
 {
-    protected $fillable = ['parent' ,'name' , 'image'];
     use HasFactory;
     use HasPersianSlug;
     
+    protected $fillable = ['parent' ,'name' , 'image'];
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

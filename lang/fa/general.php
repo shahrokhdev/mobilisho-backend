@@ -3,6 +3,7 @@
 return [
     'users' => 'کاربران',
     'categories' => 'دسته بندی ها',
+    'products' => 'محصولات',
     'name' => 'نام',
     'email' => 'ایمیل',
     'password' => 'رمز عبور',
@@ -12,5 +13,10 @@ return [
     'username' => 'نام کاربری',
      'created_at' => "ایجاد شده",
     'updated_at' => "ویرایش شده",
-    'image' => "تصویر"
+    'image' => "تصویر",
+    'title' => "عنوان",
+    'description' => "توضیحات",
+    'price' => "قیمت",
+    'inventory' => "تعداد موجود در انبار",
+    'view_count' => "تعداد بازدید",
 ];

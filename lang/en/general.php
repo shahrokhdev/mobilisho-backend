@@ -3,6 +3,7 @@
 return [
     'users' => 'users',
     'categories' => 'categories',
+    'products' => 'products',
     'name' => 'name',
     'email' => 'email',
     'password' => 'password',
@@ -12,5 +13,10 @@ return [
     'status' => 'status',
     'created_at' => "created_at",
     'updated_at' => "updated_at",
-    'image' => "image"
+    'image' => "image",
+    'title' => "title",
+    'description' => "description",
+    'price' => "price",
+    'inventory' => "inventory",
+    'view_count' => "view_count",
 ];
