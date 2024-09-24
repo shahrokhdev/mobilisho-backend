@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,7 +39,7 @@ class ProductResource extends Resource
                 ->maxLength(255)
                  ->label(__("general.title")),       
 
-                TextInput::make('description')
+                 Textarea::make('description')
                 ->required()
                 ->maxLength(255)
                  ->label(__("general.description")),      

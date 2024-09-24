@@ -19,6 +19,10 @@ class CommentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __(key: 'general.comments');
+    }
     public static function form(Form $form): Form
     {
         return $form

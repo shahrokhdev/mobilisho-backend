@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->default(0);
+            $table->string('title');
+            $table->string('description');
+            $table->enum('priority' , ['low' , 'medium' , 'high', 'important'])->default('medium');
+            $table->enum('state' , ['rejected' , 'pending' , 'answered'])->default('pending');
+            $table->string('attached_file');
             $table->timestamps();
         });
     }

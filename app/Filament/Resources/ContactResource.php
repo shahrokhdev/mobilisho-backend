@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketResource\Pages;
-use App\Filament\Resources\TicketResource\RelationManagers;
-use App\Models\Ticket;
+use App\Filament\Resources\ContactResource\Pages;
+use App\Filament\Resources\ContactResource\RelationManagers;
+use App\Models\Contact;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -16,52 +15,55 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\FilesColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketResource extends Resource
+class ContactResource extends Resource
 {
-    protected static ?string $model = Ticket::class;
+    protected static ?string $model = Contact::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
     public static function getNavigationLabel(): string
     {
-        return __(key: 'general.tickets');
+        return __(key: 'general.contacts');
     }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('priority')
-                ->options([
-                    'low' => 'low',
-                    'medium' => 'medium',
-                    'high' => 'high',
-                    'important' => 'important',
-                ])->label(__(key: "general.priority")),
-
-                TextInput::make(name: 'title')
+                TextInput::make('first_name')
                 ->required()
                 ->maxLength(length: 30)
-                 ->label(__("general.title")),        
+                 ->label(__("general.first_name")),        
 
-                Textarea::make('description')
+                TextInput::make('last_name')
                 ->required()
-                ->maxLength(500)
-                 ->label(__("general.description")),              
+                ->maxLength(50)
+                 ->label(__("general.last_name"))
+                 ,              
+                TextInput::make('email')
+                ->required()
+                ->maxLength(50)
+                 ->label(__("general.email")),    
 
-                 FileUpload::make('attached_file')->required()
-                     ->label(__("general.attached_file")), 
+                TextInput::make('phone_number')
+                ->required()
+                ->maxLength(50)
+                 ->label(__("general.phone_number")),              
 
-                  Select::make('state')
+                 Textarea::make('message')
+                 ->required()
+                 ->maxLength(500)
+                  ->label(__("general.message")),
+
+                  Select::make('status')
                   ->options([
                       'rejected' => 'rejected',
                       'pending' => 'pending',
                       'answered' => 'answered',
-                  ])->label(__(key: "general.state")),
+                  ])->label(__(key: "general.status"))
             ]);
     }
 
@@ -69,13 +71,12 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label(__('general.title')),
-                TextColumn::make('description')->label(__('general.description')),
-                TextColumn::make('state')->label(__('general.state')),
-                TextColumn::make('priority')->label(__('general.priority')),
-            /*     FileUploadColumn::make('attached_file')
-                ->multiple()
-                ->openable(), */
+                TextColumn::make('first_name')->label(__('general.first_name')),
+                TextColumn::make('last_name')->label(__('general.last_name')),
+                TextColumn::make('email')->label(__('general.email')),
+                TextColumn::make('phone_number')->label(__('general.phone_number')),
+                TextColumn::make('message')->label(__('general.message')),
+                TextColumn::make('status')->label(__('general.status')),
                 TextColumn::make('created_at')->label(__('general.created_at')),
                 TextColumn::make('updated_at')->label(__('general.updated_at')),
             ])
@@ -104,9 +105,9 @@ class TicketResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTickets::route('/'),
-            'create' => Pages\CreateTicket::route('/create'),
-            'edit' => Pages\EditTicket::route('/{record}/edit'),
+            'index' => Pages\ListContacts::route('/'),
+            'create' => Pages\CreateContact::route('/create'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }

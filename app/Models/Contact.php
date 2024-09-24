@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket extends Model
+class Contact extends Model
 {
     use HasFactory;
-    protected $fillable = ['title' , 'description' , 'image', 'state' , 'priority' , 'attached_file'];
+    protected $fillable = ['first_name' ,'last_name' , 'email' , 'phone_number' , 'message','status'];
 }

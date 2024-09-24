@@ -7,6 +7,7 @@ use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -36,7 +37,7 @@ class ArticleResource extends Resource
                 ->maxLength(255)
                  ->label(__("general.title")),  
 
-                TextInput::make(name: 'description')
+                 Textarea::make(name: 'description')
                 ->required()
                 ->maxLength(255)
                  ->label(__("general.description")),              

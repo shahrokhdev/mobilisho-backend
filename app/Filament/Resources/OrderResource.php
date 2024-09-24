@@ -19,6 +19,10 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __(key: 'general.orders');
+    }
     public static function form(Form $form): Form
     {
         return $form
