@@ -4,13 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -34,6 +37,13 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+
+                 Select::make('category_id')
+                ->relationship(name:'categories' , titleAttribute:'name')
+                ->multiple()
+                ->preload()
+                 ->label(__("general.title")),       
+
                 TextInput::make('title')
                 ->required()
                 ->maxLength(255)
@@ -47,7 +57,12 @@ class ProductResource extends Resource
                 TextInput::make('price')
                 ->required()
                 ->maxLength(255)
-                 ->label(__("general.price")),      
+                 ->label(__("general.price"))
+                  ->mask(RawJs::make('$money($input)'))
+                 ->stripCharacters(',')
+                 ->numeric() ,     
+       
+   
 
                  FileUpload::make('image')
                 ->required()

@@ -7,6 +7,7 @@ use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -39,13 +40,24 @@ class CategoryResource extends Resource
                  ->label(__("general.name")),              
 
                  FileUpload::make('image')->required(),
+                 
+                  Select::make('parent_id')
+                 ->relationship(name:'child' , titleAttribute:'name')
+                 ->preload()
+                 ->label(__("general.subcategories")),       
+   
             ]);
+            
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('parent_id')
+                ->label('parent_id')
+                ->searchable()
+                ->sortable(),
                  TextColumn::make('name')->label(__('general.name')),
                   ImageColumn::make('image')->label(__('general.image')),
                   TextColumn::make('created_at')->label(__('general.created_at')),

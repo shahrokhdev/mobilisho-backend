@@ -35,5 +35,5 @@ return [
     'birth_date' => "birth date",
     'priority' => "priority",
     'attached_file' => "attached_file",
-    
+    'subcategories' => 'sub categories'
 ];

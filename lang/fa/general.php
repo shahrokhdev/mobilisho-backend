@@ -35,4 +35,5 @@ return [
     'birth_date' => "تاریخ تولد",
     'priority' => "اولویت",
     'attached_file' => "فایل پیوست",
+    'subcategories' => 'زیر دسته'
 ];
