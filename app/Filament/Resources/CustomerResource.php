@@ -25,6 +25,11 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    
+    public static function getpluralModelLabel(): string
+    {
+        return __(key: 'general.customers');
+    }
     public static function getNavigationLabel(): string
     {
         return __(key: 'general.customers');
@@ -81,9 +86,9 @@ class CustomerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->button()->color('info'),
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

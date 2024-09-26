@@ -13,7 +13,7 @@ class Category extends Model
     use HasFactory;
     use HasPersianSlug;
     
-    protected $fillable = ['parent' ,'name' , 'image'];
+    protected $fillable = ['parent_id' ,'name' , 'image'];
 
     public function getSlugOptions(): SlugOptions
     {
@@ -22,9 +22,9 @@ class Category extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function child(): BelongsTo
+    public function child(): hasMany
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     public function products(){

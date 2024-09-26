@@ -21,9 +21,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
-
+    
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+
+    public static function getpluralModelLabel(): string
+    {
+        return __(key: 'general.articles');
+    }
     public static function getNavigationLabel(): string
     {
         return __(key: 'general.articles');
@@ -61,9 +66,9 @@ class ArticleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->button()->color('info'),
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

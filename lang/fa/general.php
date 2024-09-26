@@ -35,5 +35,11 @@ return [
     'birth_date' => "تاریخ تولد",
     'priority' => "اولویت",
     'attached_file' => "فایل پیوست",
-    'subcategories' => 'زیر دسته'
+    'subcategories' => 'زیر دسته',
+    'comment' => 'نظر',
+    "pending" => "در انتظار تایید",
+    "approved" => "تایید شده",
+    "rejected" => "رد شده",
+    "answered" => "پاسخ داده شده",
+    'create-subcategory' => "افزودن زیردسته"
 ];

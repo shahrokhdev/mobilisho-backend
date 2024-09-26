@@ -35,5 +35,11 @@ return [
     'birth_date' => "birth date",
     'priority' => "priority",
     'attached_file' => "attached_file",
-    'subcategories' => 'sub categories'
+    'subcategories' => 'sub categories',
+    'comment' => 'comment',
+    "pending" => "pending",
+    "approved" => "approved",
+    "rejected" => "rejected",
+    "answered" => "answered",
+    'create-subcategory' => "create subcategory"
 ];

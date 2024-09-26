@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->default(0);
             $table->foreign('user_id')->references('id')->on("users")->onDelete('cascade');
-            $table->unsignedBigInteger('commentable_id');
-            $table->string('commentable_type');
-            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->unsignedBigInteger('commentable_id')->default(1);
+            $table->string('commentable_type')->nullable();
+            $table->integer(column: 'parent')->default(0);
             $table->text('comment');
-            $table->enum('status' , ['rejected' , 'pending' , 'confirmed'] )->default('pending');
+            $table->enum('status' , ['pending' , 'approved'] )->default('pending');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,6 +26,11 @@ class ContactResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
+    
+    public static function getpluralModelLabel(): string
+    {
+        return __(key: 'general.contacts');
+    }
     public static function getNavigationLabel(): string
     {
         return __(key: 'general.contacts');
@@ -75,18 +81,21 @@ class ContactResource extends Resource
                 TextColumn::make('last_name')->label(__('general.last_name')),
                 TextColumn::make('email')->label(__('general.email')),
                 TextColumn::make('phone_number')->label(__('general.phone_number')),
-                TextColumn::make('message')->label(__('general.message')),
-                TextColumn::make('status')->label(__('general.status')),
+                TextColumn::make('message')->label(__('general.message'))->limit(20),
+                SelectColumn::make('status')->label(__('general.status')) ->options([
+                    'rejected' => __('general.rejected'),
+                    'pending' => __('general.pending'),
+                    'answered' => __('general.answered'),
+                ]),
                 TextColumn::make('created_at')->label(__('general.created_at')),
-                TextColumn::make('updated_at')->label(__('general.updated_at')),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->button()->color('info'),
+                Tables\Actions\EditAction::make()->button(),
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
