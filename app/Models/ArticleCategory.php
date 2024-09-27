@@ -21,4 +21,9 @@ class ArticleCategory extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+
+    public function articles() {
+        return $this->hasMany(Article::class,'category_id');
+   }
 }

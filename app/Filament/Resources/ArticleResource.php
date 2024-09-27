@@ -7,6 +7,7 @@ use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -37,6 +38,10 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('category_id')
+                ->relationship(name:'category' , titleAttribute:'name')
+                 ->label(__("general.categoryName")),     
+                 
                 TextInput::make(name: 'title')
                 ->required()
                 ->maxLength(255)
@@ -55,8 +60,9 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                  TextColumn::make('title')->label(__('general.name')),
-                  TextColumn::make(name: 'description')->label(__('general.name')),
+                  TextColumn::make('category.name')->label(__('general.categoryName')),
+                  TextColumn::make('title')->label(__('general.title')),
+                  TextColumn::make(name: 'description')->label(__('general.description'))->limit(30),
                   ImageColumn::make('image')->label(__('general.image')),
                   TextColumn::make('view_count')->label(__('general.view_count')),
                   TextColumn::make('created_at')->label(__('general.created_at')),
