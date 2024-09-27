@@ -52,7 +52,7 @@ class CategoryResource extends Resource
                  $update ? Select::make('parent_id')
                  ->relationship(name:'child' , titleAttribute:'name')
                  ->preload()
-                 ->label(__("general.subcategories")): TextInput::make('parent_id')
+                 ->label(__("general.categoryName")): TextInput::make('parent_id')
                  ->type('hidden')
                  ->hiddenLabel()
                   ->default($parent_id),    
@@ -65,8 +65,9 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                 TextColumn::make('name')->label(__('general.name')),
-                  ImageColumn::make('image')->label(__('general.image')),
+                TextColumn::make('name')->label(__('general.categoryName')),
+                ImageColumn::make('image')->label(__('general.image')),
+                TextColumn::make('child.name')->label(__('general.subcategories'))->limit(25),
                   TextColumn::make('created_at')->label(__('general.created_at')),
             ])
             ->filters([

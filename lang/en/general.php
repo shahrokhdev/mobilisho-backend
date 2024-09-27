@@ -35,6 +35,7 @@ return [
     'birth_date' => "birth date",
     'priority' => "priority",
     'attached_file' => "attached_file",
+    'categoryName' => 'category name',
     'subcategories' => 'sub categories',
     'comment' => 'comment',
     "pending" => "pending",

@@ -26,10 +26,10 @@ class CommentsTableSeeder extends Seeder
                 'commentable_id' => 1,
                 'commentable_type' => 'App\\Models\\Product',
                 'parent' => 0,
-                'comment' => 'این نظر منه ',
-                'status' => 'pending',
+                'comment' => 'این نظر منه و به خودم مربوطه',
+                'status' => 'approved',
                 'created_at' => '2024-09-25 20:41:41',
-                'updated_at' => '2024-09-25 21:02:43',
+                'updated_at' => '2024-09-25 23:17:30',
             ),
         ));
         
