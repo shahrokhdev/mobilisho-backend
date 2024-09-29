@@ -42,5 +42,7 @@ return [
     "approved" => "تایید شده",
     "rejected" => "رد شده",
     "answered" => "پاسخ داده شده",
-    'create-subcategory' => "افزودن زیردسته"
+    'create-subcategory' => "افزودن زیردسته",
+    'attribute' =>  'ویژگی',
+    'value' =>  'مقدار'
 ];

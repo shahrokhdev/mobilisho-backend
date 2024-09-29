@@ -4,14 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\AttributeValue;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
@@ -41,13 +46,12 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-
+            ->schema([  
                  Select::make('category_id')
                 ->relationship(name:'categories' , titleAttribute:'name')
                 ->multiple()
                 ->preload()
-                 ->label(__("general.title")),       
+                 ->label(__("general.categoryName")),       
 
                 TextInput::make('title')
                 ->required()
@@ -66,9 +70,7 @@ class ProductResource extends Resource
                   ->mask(RawJs::make('$money($input)'))
                  ->stripCharacters(',')
                  ->numeric() ,     
-       
-   
-
+    
                  FileUpload::make('image')
                 ->required()
                  ->label(__("general.image")),     
@@ -76,7 +78,43 @@ class ProductResource extends Resource
                 TextInput::make('inventory')
                 ->required()
                 ->maxLength(255)
-                 ->label(__("general.inventory")),              
+                 ->label(__("general.inventory")),          
+                 
+
+                   Grid::make(1)
+                    ->schema([
+                        Repeater::make('attribute')
+                        ->schema([
+                            Select::make('attribute_id')
+                                ->relationship('attributes', 'name' )
+                                ->createOptionForm([
+                                     TextInput::make('name')
+                                        ->required(),
+                                ])
+                                ->live()
+                                ->reactive()
+                                ->preload()
+                                ->label(__('general.attribute')),
+                    
+                            Select::make('value_id')
+                            ->options(function (Get $get) {
+                                return AttributeValue::query()->where('attribute_id', $get('attribute_id'))->pluck('value', 'id');
+                            })
+                            ->createOptionForm([
+                                TextInput::make('attribute_id')
+                                    ->required(),
+                                TextInput::make('value')
+                                    ->required(),
+                            ])          
+                            ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
+                            
+                            ->live()
+                            ->preload()
+                            ->label(__('general.value')),
+                        ])
+                        ->columns(2)
+                        ->label(__('general.attribute')),
+                    ]),      
             ]);
     }
 
@@ -107,7 +145,9 @@ class ProductResource extends Resource
                 ]),
             ]);
     }
+    
 
+    
     public static function getRelations(): array
     {
         return [

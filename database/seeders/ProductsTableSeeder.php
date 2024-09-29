@@ -45,6 +45,20 @@ class ProductsTableSeeder extends Seeder
                 'created_at' => '2024-09-24 17:18:10',
                 'updated_at' => '2024-09-24 17:18:10',
             ),
+            2 => 
+            array (
+                'id' => 3,
+                'title' => 'گوشی سامسونگ مدل ultra',
+                'slug' => 'گوشی-سامسونگ-مدل-ultra',
+                'description' => ' گوشی سامسونگ مدل ultra
+با کیفیت بسیار عالی و اصل',
+                'image' => '01J8TQRREAR5ZT4MN3VC1TDNYB.jpg',
+                'price' => '35000000',
+                'inventory' => 10,
+                'view_count' => 0,
+                'created_at' => '2024-09-27 21:56:36',
+                'updated_at' => '2024-09-27 21:56:36',
+            ),
         ));
         
         

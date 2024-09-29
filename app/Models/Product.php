@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Pishran\LaravelPersianSlug\HasPersianSlug;
 use Spatie\Sluggable\SlugOptions;
 class Product extends Model
@@ -21,5 +22,13 @@ class Product extends Model
 
     public function categories(){
         return $this->belongsToMany(Category::class);
-   }
+    }
+
+
+    public function attributes(){
+         return $this->belongsToMany(Attribute::class)->withPivot(['value_id']);
+    }
+
+
+
 }

@@ -42,5 +42,8 @@ return [
     "approved" => "approved",
     "rejected" => "rejected",
     "answered" => "answered",
-    'create-subcategory' => "create subcategory"
+    'create-subcategory' => "create subcategory",
+    'create-attr' =>  'attribute',
+    'attribute' =>  'attribute',
+    'value' =>  'value'
 ];
