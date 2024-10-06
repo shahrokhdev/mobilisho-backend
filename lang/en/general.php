@@ -45,5 +45,8 @@ return [
     'create-subcategory' => "create subcategory",
     'create-attr' =>  'attribute',
     'attribute' =>  'attribute',
-    'value' =>  'value'
+    'value' =>  'value',
+    'article-management' => "article management" ,
+    'product-management' => "product management",
+    'system-management' => "system management"
 ];

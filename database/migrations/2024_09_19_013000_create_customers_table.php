@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('province_id')->default(0);
-            $table->unsignedBigInteger(column: 'city_id')->default(0);
+            $table->unsignedBigInteger('city_id')->default(0);
             $table->unsignedBigInteger('town_id')->default(0);
             $table->string('name');
             $table->string('family');

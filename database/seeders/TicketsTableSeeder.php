@@ -22,7 +22,7 @@ class TicketsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'user_id' => 0,
+                'user_id' => 2,
                 'title' => 'test',
                 'description' => 'this is test ',
                 'priority' => 'low',

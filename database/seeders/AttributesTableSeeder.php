@@ -33,6 +33,13 @@ class AttributesTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            2 => 
+            array (
+                'id' => 3,
+                'name' => 'صفحه نمایش',
+                'created_at' => '2024-10-03 09:40:41',
+                'updated_at' => '2024-10-03 09:40:41',
+            ),
         ));
         
         

@@ -44,5 +44,8 @@ return [
     "answered" => "پاسخ داده شده",
     'create-subcategory' => "افزودن زیردسته",
     'attribute' =>  'ویژگی',
-    'value' =>  'مقدار'
+    'value' =>  'مقدار',
+    'article-management' => "مدیریت مقالات",
+    'product-management' => "مدیریت محصولات",
+    'system-management' => "مدیریت سیستم"
 ];
