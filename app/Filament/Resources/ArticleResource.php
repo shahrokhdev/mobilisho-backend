@@ -26,6 +26,7 @@ class ArticleResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
+
     public static function getpluralModelLabel(): string
     {
         return __(key: 'general.articles');
@@ -33,6 +34,19 @@ class ArticleResource extends Resource
     public static function getNavigationLabel(): string
     {
         return __(key: 'general.articles');
+    }
+    public static function getNavigationGroup(): string
+    {
+        return __(key: 'general.article-management');
+    }
+
+     public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
     public static function form(Form $form): Form
     {

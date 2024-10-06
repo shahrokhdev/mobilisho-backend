@@ -35,6 +35,21 @@ class CommentResource extends Resource
         return __(key: 'general.comments');
     }
 
+    
+    public static function getNavigationGroup(): string
+    {
+        return __(key: 'general.system-management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 5 ? 'primary' : 'warning';
+    }
+
     public static function canCreate(): bool
      {
          return false; 

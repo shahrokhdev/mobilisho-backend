@@ -13,12 +13,13 @@ class CreateProduct extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+
         $product = static::getModel()::create($data);
-        foreach($data['attribute'] as $attr) {
+        dd($data);
+        foreach ($data['attributes'] as $attr) {
+            dd($attr);
             $product->attributes()->attach($attr['attribute_id'] , ['value_id' => $attr['value_id']]);
         }
-        // $product->attributes()->cetr($data['attribute']);
         return $product;
-        // dd($data);
     }
 }

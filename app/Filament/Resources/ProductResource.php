@@ -25,6 +25,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Http\Request;
 
 class ProductResource extends Resource
 {
@@ -40,6 +41,20 @@ class ProductResource extends Resource
     public static function getNavigationLabel(): string
     {
         return __(key: 'general.products');
+    }
+
+    public static function getNavigationGroup(): string
+    {
+        return __(key: 'general.product-management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
 
 
@@ -78,39 +93,50 @@ class ProductResource extends Resource
                 TextInput::make('inventory')
                 ->required()
                 ->maxLength(255)
+                ->rules('numeric')
                  ->label(__("general.inventory")),          
                  
 
                    Grid::make(1)
                     ->schema([
-                        Repeater::make('attribute')
+                        Repeater::make('attributes')
                         ->schema([
                             Select::make('attribute_id')
                                 ->relationship('attributes', 'name' )
                                 ->createOptionForm([
                                      TextInput::make('name')
-                                        ->required(),
+                                        ->required()
+                                        ->unique()
+                                        ->label(__('general.name')),
                                 ])
                                 ->live()
                                 ->reactive()
                                 ->preload()
                                 ->label(__('general.attribute')),
                     
-                            Select::make('value_id')
-                            ->options(function (Get $get) {
-                                return AttributeValue::query()->where('attribute_id', $get('attribute_id'))->pluck('value', 'id');
-                            })
-                            ->createOptionForm([
-                                TextInput::make('attribute_id')
-                                    ->required(),
-                                TextInput::make('value')
-                                    ->required(),
-                            ])          
-                            ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
-                            
-                            ->live()
-                            ->preload()
-                            ->label(__('general.value')),
+                                Select::make('value_id')
+                                ->options(function (Get $get) {
+                                    return AttributeValue::query()
+                                        ->where('attribute_id', $get('attribute_id'))
+                                        ->pluck('value', 'id');
+                                })
+                                ->createOptionUsing(function (array $data) {
+                                    $get = app(Get::class); 
+                                    $data['attribute_id'] = $get('attribute_id');
+                                    return AttributeValue::create($data);
+                                })
+                                ->createOptionForm(function (Get $get) {
+                                    return [
+                                        TextInput::make('attribute_id')
+                                        ->default($get('attribute_id')),
+                                        TextInput::make('value')
+                                            ->required(),
+                                    ];
+                                })
+                                 ->label(__('general.value'))
+                                 ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
+                                 ->live()
+                                 ->preload()
                         ])
                         ->columns(2)
                         ->label(__('general.attribute')),

@@ -35,6 +35,25 @@ class TicketResource extends Resource
     {
         return __(key: 'general.tickets');
     }
+
+    public static function getNavigationGroup(): string
+    {
+        return __(key: 'general.system-management');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 5 ? 'primary' : 'warning';
+    }
+
+    public static function canCreate(): bool
+    {
+        return false; 
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -88,6 +107,7 @@ class TicketResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
+                Tables\Actions\ReplicateAction::make()->button()->color('warning'),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
@@ -112,5 +132,12 @@ class TicketResource extends Resource
             'create' => Pages\CreateTicket::route('/create'),
             'edit' => Pages\EditTicket::route('/{record}/edit'),
         ];
+    }
+
+    public function replyToTicket($reply)
+    {
+        // Logic to reply to the ticket goes here
+        // You can use the $reply variable to store the reply message
+        // and then update the ticket status or add a new comment to the ticket
     }
 }

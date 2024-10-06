@@ -25,6 +25,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?int $navigationSort = 1;
 
 
     public static function getpluralModelLabel(): string
@@ -34,6 +35,21 @@ class UserResource extends Resource
      public static function getNavigationLabel(): string
     {
         return __(key: 'general.users');
+    }
+
+    public static function getNavigationGroup(): string
+    {
+        return __(key: 'general.system-management');
+    }
+    
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
 
     public static function form(Form $form): Form
