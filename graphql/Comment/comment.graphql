@@ -1,0 +1,12 @@
+type Comment {
+    id: ID!
+    comment: String!
+    status: String!
+    user: User!
+    child: [Comment!]
+}
+
+extend type Query {
+    comments: [Comment!]! @all
+    findComment(id: ID @eq): Comment @find
+}

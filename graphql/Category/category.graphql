@@ -1,0 +1,37 @@
+type Category {
+    id: ID!
+    parent_id: Int
+    name: String!
+    slug: String!
+    image: String!
+    keyword: String
+    child: [Category!]
+}
+
+
+extend type Query {
+    categories: [Category!]! @all
+    findCategory(id: ID @eq, slug: String @eq): Category @find
+    famousCategory(
+        first: Int = 3
+        orderBy: [SubOrderBy!] = [{ column: "most_searched", order: DESC }]
+    ): [Category]
+        @orderBy(
+            columns: ["most_searched"]
+            default: "most_searched:desc"
+        )
+}
+
+input SubOrderBy {
+    column: String!
+    order: SortOrderEnum!
+}
+
+enum SortOrderEnum {
+    ASC
+    DESC
+}
+
+
+
+

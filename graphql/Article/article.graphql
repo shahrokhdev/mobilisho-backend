@@ -1,0 +1,13 @@
+type Article {
+    id: ID!
+    title: String!
+    description: String!
+    image: String!
+    view_count: String!
+    category: ArticleCategory!
+}
+
+extend type Query {
+    articles: [Article!]! @all
+    findArticle(id: ID @eq): Article @find
+}

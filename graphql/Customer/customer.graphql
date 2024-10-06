@@ -1,0 +1,14 @@
+type Customer {
+    id: ID!
+    name: String!
+    family: String!
+    image: String!
+    mobile: String!
+    birth_date: String!
+    gender: String!
+}
+
+extend type Query {
+    customers: [Customer!]! @all
+    findCustomer(id: ID @eq): Customer @find
+}

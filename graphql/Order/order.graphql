@@ -1,0 +1,18 @@
+type Order {
+    id: ID!
+    order_date: String!
+    status: String!
+    total_amount: String!
+    payment_method: String!
+    pay_status: String!
+    delivery_address: String!
+    copen: String!
+    copen_price: String!
+    final_price: String!
+    star: String!
+}
+
+extend type Query {
+    orders : [Order!]! @all
+    findOrder(id: ID @eq): Order @find
+}

@@ -1,0 +1,12 @@
+type ArticleCategory {
+    id: ID!
+    name: String!
+    slug: String!
+    image: String!
+    articles: [Article!]
+}
+
+extend type Query {
+    articleCategories: [ArticleCategory!]! @all
+    findArticleCategory(id: ID @eq, slug: String @eq): ArticleCategory @find
+}

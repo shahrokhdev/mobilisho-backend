@@ -1,0 +1,11 @@
+type Attribute {
+    id: ID!
+    name: String!
+    values: [AttributeValue!]
+    products: [Product!]
+}
+
+extend type Query {
+    attributes: [Attribute!]! @all
+    findAttribute(id: ID @eq): Attribute @find
+}

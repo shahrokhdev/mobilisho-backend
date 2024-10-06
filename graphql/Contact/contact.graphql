@@ -1,0 +1,14 @@
+type Contact {
+    id: ID!
+    first_name: String!
+    last_name: String!
+    email: String!
+    phone_number: String!
+    message: String!
+    status: String!
+}
+
+extend type Query {
+    contacts: [Contact!]! @all
+    findContact(id: ID @eq): Contact @find
+}

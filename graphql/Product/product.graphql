@@ -1,0 +1,17 @@
+type Product {
+    id: ID!
+    title: String!
+    slug: String!
+    description: String!
+    image: String!
+    price: String!
+    view_count: String!
+    inventory: String!
+    attributes: [Attribute!]
+    categories: [Category!]
+}
+
+extend type Query {
+    products: [Product!]! @all
+    findProduct(id: ID @eq): Product @find
+}
