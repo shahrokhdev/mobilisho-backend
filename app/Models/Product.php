@@ -11,7 +11,7 @@ class Product extends Model
 {
     use HasFactory;
     use HasPersianSlug;
-    protected $fillable = ['title','description','image','price','inventory','value_id'];
+    protected $fillable = ['title','description','image','price','inventory'];
 
     public function getSlugOptions(): SlugOptions
     {
@@ -26,7 +26,7 @@ class Product extends Model
 
 
     public function attributes(){
-         return $this->belongsToMany(Attribute::class)->withPivot(['value_id']);
+         return $this->belongsToMany(Attribute::class, 'attribute_product')->withPivot(['value_id']);
     }
 
 

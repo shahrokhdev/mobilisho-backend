@@ -100,6 +100,7 @@ class ProductResource extends Resource
                    Grid::make(1)
                     ->schema([
                         Repeater::make('attributes')
+                        ->dehydrated(true)
                         ->schema([
                             Select::make('attribute_id')
                                 ->relationship('attributes', 'name' )
@@ -120,6 +121,7 @@ class ProductResource extends Resource
                                         ->where('attribute_id', $get('attribute_id'))
                                         ->pluck('value', 'id');
                                 })
+                                ->dehydrated(true)
                                 ->createOptionUsing(function (array $data) {
                                     $get = app(Get::class); 
                                     $data['attribute_id'] = $get('attribute_id');
