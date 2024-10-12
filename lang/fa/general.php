@@ -39,6 +39,9 @@ return [
     'subcategories' => 'نام زیر دسته',
     'comment' => 'نظر',
     "pending" => "در انتظار تایید",
+    "approve" => "تایید کردن",
+    "delete" => "حذف کردن",
+    "deleted" => "حذف شد",
     "approved" => "تایید شده",
     "rejected" => "رد شده",
     "answered" => "پاسخ داده شده",
@@ -47,5 +50,6 @@ return [
     'value' =>  'مقدار',
     'article-management' => "مدیریت مقالات",
     'product-management' => "مدیریت محصولات",
-    'system-management' => "مدیریت سیستم"
+    'system-management' => "مدیریت سیستم",
+     'comment-subject' => "موضوع"
 ];

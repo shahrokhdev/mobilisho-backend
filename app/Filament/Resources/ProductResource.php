@@ -135,7 +135,8 @@ class ProductResource extends Resource
                                 ->createOptionForm(function (Get $get) {
                                     return [
                                         TextInput::make('value')
-                                            ->required(),
+                                        ->required()
+                                        ->label(__('general.value'))
                                     ];
                                 })
                                 ->createOptionUsing(function (array $data,Get $get) {

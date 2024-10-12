@@ -39,6 +39,9 @@ return [
     'subcategories' => 'sub categories',
     'comment' => 'comment',
     "pending" => "pending",
+    "approve" => "approve",
+    "delete" => "delete",
+    "deleted" => "deleted",
     "approved" => "approved",
     "rejected" => "rejected",
     "answered" => "answered",
@@ -48,5 +51,6 @@ return [
     'value' =>  'value',
     'article-management' => "article management" ,
     'product-management' => "product management",
-    'system-management' => "system management"
+    'system-management' => "system management" ,
+    'comment-subject' => "comment subject"
 ];
