@@ -8,6 +8,7 @@ use App\Models\AttributeValue;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -95,15 +96,26 @@ class ProductResource extends Resource
                 ->maxLength(255)
                 ->rules('numeric')
                  ->label(__("general.inventory")),          
-                 
-
                    Grid::make(1)
                     ->schema([
-                        Repeater::make('attributes')
-                        ->dehydrated(true)
+                        Repeater::make('properties')
+                        ->afterStateHydrated( function (Component $component, $livewire, $context) {
+                            if ($context !== "create")
+                            {
+                            $ar = [];
+                            $attrs = $livewire->record->attributes->toArray();
+                            foreach($attrs as $attr){
+                                $ar[] = [
+                                    'attribute_id' => $attr['pivot']['attribute_id'] ,
+                                    'value_id' => $attr['pivot']['value_id']
+                                ];
+                            }
+                            $component->state($ar);
+                        }
+                        })
                         ->schema([
                             Select::make('attribute_id')
-                                ->relationship('attributes', 'name' )
+                                ->relationship('attributes', 'name')
                                 ->createOptionForm([
                                      TextInput::make('name')
                                         ->required()
@@ -111,7 +123,6 @@ class ProductResource extends Resource
                                         ->label(__('general.name')),
                                 ])
                                 ->live()
-                                ->reactive()
                                 ->preload()
                                 ->label(__('general.attribute')),
                     
@@ -121,20 +132,17 @@ class ProductResource extends Resource
                                         ->where('attribute_id', $get('attribute_id'))
                                         ->pluck('value', 'id');
                                 })
-                                ->dehydrated(true)
-                                ->createOptionUsing(function (array $data) {
-                                    $get = app(Get::class); 
-                                    $data['attribute_id'] = $get('attribute_id');
-                                    return AttributeValue::create($data);
-                                })
                                 ->createOptionForm(function (Get $get) {
                                     return [
-                                        TextInput::make('attribute_id')
-                                        ->default($get('attribute_id')),
                                         TextInput::make('value')
                                             ->required(),
                                     ];
                                 })
+                                ->createOptionUsing(function (array $data,Get $get) {
+                                    $data['attribute_id'] = $get('attribute_id');
+                                    return AttributeValue::create($data);
+                                })
+
                                  ->label(__('general.value'))
                                  ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
                                  ->live()

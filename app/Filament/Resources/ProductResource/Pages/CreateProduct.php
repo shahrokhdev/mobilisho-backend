@@ -13,13 +13,46 @@ class CreateProduct extends CreateRecord
 {
     protected static string $resource = ProductResource::class;
 
-   protected function handleRecordCreation(array $data): Model
-{
-    $product = static::getModel()::create($data);
 
-    $product->attributes()->sync($data['attributes']);
+    public $formData;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+
+
+        $this->formData = $data;
+        return $data;
+
+    }
     
-    return $product;
 
-}
+
+    public function afterCreate()
+    {
+
+
+        $storedDataId = $this->record->getKey();
+
+        // dd($storedDataId, $this->formData);
+
+
+
+        $product = static::getModel()::find($storedDataId);
+
+
+
+        // dd($product);
+
+        $product->attributes()->sync($this->formData['properties']);
+    }
+
+//    protected function handleRecordCreation(array $data): Model
+// {
+//     $product = static::getModel()::create($data);
+
+//     $product->attributes()->sync($data['attributes']);
+    
+//     return $product;
+
+// }
 }

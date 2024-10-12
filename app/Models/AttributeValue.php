@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttributeValue extends Model
 {
-    protected $fillable = ['value_id','value'];
+    protected $fillable = ['attribute_id','value'];
 
     use HasFactory;
 
