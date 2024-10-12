@@ -21,15 +21,27 @@ class CommentsTableSeeder extends Seeder
         \DB::table('comments')->insert(array (
             0 => 
             array (
-                'id' => 1,
-                'user_id' => 1,
-                'commentable_id' => 1,
+                'id' => 5,
+                'user_id' => 2,
+                'commentable_id' => 2,
                 'commentable_type' => 'App\\Models\\Product',
                 'parent' => 0,
-                'comment' => 'این نظر منه و به خودم مربوطه',
+                'comment' => 'سلام قیمت چند ؟',
                 'status' => 'approved',
                 'created_at' => '2024-09-25 20:41:41',
-                'updated_at' => '2024-09-25 23:17:30',
+                'updated_at' => '2024-10-06 22:07:47',
+            ),
+            1 => 
+            array (
+                'id' => 6,
+                'user_id' => 2,
+                'commentable_id' => 2,
+                'commentable_type' => 'App\\Models\\Product',
+                'parent' => 0,
+                'comment' => 'سلام قیمت چند ؟',
+                'status' => 'approved',
+                'created_at' => '2024-09-25 20:41:41',
+                'updated_at' => '2024-10-06 22:07:47',
             ),
         ));
         

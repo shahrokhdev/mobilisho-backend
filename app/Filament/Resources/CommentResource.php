@@ -5,19 +5,25 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CommentResource\Pages;
 use App\Filament\Resources\CommentResource\RelationManagers;
 use App\Models\Comment;
+use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class CommentResource extends Resource
 {
@@ -60,8 +66,9 @@ class CommentResource extends Resource
     {
         return $form
             ->schema([
-                Textarea::make('comment')
+                MarkdownEditor::make('comment')
                 ->required()
+                ->columnSpan('full')
                 ->maxLength(500)
                  ->label(__("general.comment")),      
             ]);
@@ -71,12 +78,15 @@ class CommentResource extends Resource
     {
         return $table
             ->columns([
-                 TextColumn::make('user.name')->label(__('general.name')),
-                 TextColumn::make('comment')->label(__('general.comment'))->limit(20),
-                  SelectColumn::make('status')->label(__('general.status')) ->options([
-                    'pending' => __('general.pending'),
-                    'approved' => __('general.approved'),
-                ]),
+                 TextColumn::make('user.username')->label(__('general.username')),
+                 TextColumn::make('commentable.title')->label(__('general.comment-subject')),
+               BadgeColumn::make('status')
+               ->getStateUsing(function (Comment $record){
+                    return $record->isApproved() ? "approved" :"pending"; 
+               })->colors([
+                  'success' => "approved",
+                  'danger' => "pending",
+               ])->label(__('general.status')),  
                TextColumn::make('created_at')->label(__('general.created_at')),
             ])
             ->filters([
@@ -86,6 +96,36 @@ class CommentResource extends Resource
                 ->query(fn (Builder $query): Builder => $query->where('status', 'pending'))
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                ->action(function (Comment $comment) {
+                    $comment->status = 'approved';
+                    $comment->save();
+                    Notification::make() 
+                    ->title(__('general.approved'))
+                    ->success()
+                    ->send(); 
+                })->requiresConfirmation()
+                ->hidden(function (Comment $comment){
+                    return $comment->isApproved();
+                })
+                ->color('success')
+                ->icon('heroicon-s-check-circle')
+                ->label(__('general.approve')),
+
+                Tables\Actions\Action::make('reject')
+                ->action(function (Comment $comment) {
+                    $comment->delete();
+                    Notification::make() 
+                    ->title(__('general.deleted'))
+                    ->success()
+                    ->send(); 
+                })->requiresConfirmation()
+                ->visible(function (Comment $comment){
+                   return $comment->isApproved();
+                })
+                ->color('danger')
+                ->icon('heroicon-s-x-mark')
+                ->label(__('general.delete')),
                 Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('commentable_type')->nullable();
             $table->integer(column: 'parent')->default(0);
             $table->text('comment');
-            $table->enum('status' , ['pending' , 'approved'] )->default('pending');
+            $table->enum('status' , ['rejected', 'pending' , 'approved'] )->default('pending');
             $table->timestamps();
         });
     }
