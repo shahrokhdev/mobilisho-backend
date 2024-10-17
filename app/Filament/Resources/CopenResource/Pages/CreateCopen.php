@@ -9,4 +9,20 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCopen extends CreateRecord
 {
     protected static string $resource = CopenResource::class;
+
+    public function afterCreate() {
+/*         $storedDataId = $this->record->getKey(); */
+
+        $copen = static::getModel()::query()
+        ->where('end_date', '<' ,now())
+        ->get();
+
+         foreach($copen as $item) {
+                 $item->update([
+                    "state" => 'expired'
+                 ]);
+                 $item->save();
+         }
+
+    }
 }
