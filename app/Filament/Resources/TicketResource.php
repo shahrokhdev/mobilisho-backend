@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TicketResource\Pages;
 use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Models\Ticket;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -107,7 +108,6 @@ class TicketResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
-                Tables\Actions\ReplicateAction::make()->button()->color('warning'),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])

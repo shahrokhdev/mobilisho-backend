@@ -67,6 +67,38 @@ class AttributeValuesTableSeeder extends Seeder
                 'created_at' => '2024-10-03 14:52:29',
                 'updated_at' => '2024-10-03 14:52:29',
             ),
+            6 => 
+            array (
+                'id' => 7,
+                'attribute_id' => 1,
+                'value' => 'سفید',
+                'created_at' => '2024-10-12 15:47:54',
+                'updated_at' => '2024-10-12 15:47:54',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'attribute_id' => 1,
+                'value' => 'آبی',
+                'created_at' => '2024-10-12 15:48:12',
+                'updated_at' => '2024-10-12 15:48:12',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'attribute_id' => 1,
+                'value' => 'مشکی',
+                'created_at' => '2024-10-12 15:48:29',
+                'updated_at' => '2024-10-12 15:48:29',
+            ),
+            9 => 
+            array (
+                'id' => 10,
+                'attribute_id' => 2,
+                'value' => 'الومینیوم',
+                'created_at' => '2024-10-12 15:48:57',
+                'updated_at' => '2024-10-12 15:48:57',
+            ),
         ));
         
         

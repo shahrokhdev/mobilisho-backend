@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('province_id')->default(0);
             $table->unsignedBigInteger('city_id')->default(0);
             $table->unsignedBigInteger('town_id')->default(0);
@@ -20,7 +22,6 @@ return new class extends Migration
             $table->string('family');
             $table->string('image');
             $table->string('mobile');
-/*             $table->enum('state' , ['']); */
             $table->date('birth_date');
             $table->enum('gender' , ['male' , 'female']);
             $table->timestamps();

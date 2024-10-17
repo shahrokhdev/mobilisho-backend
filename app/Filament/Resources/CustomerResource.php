@@ -51,6 +51,11 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
+                Select::make(name: 'user_id')
+                ->relationship('user' , 'username')
+                ->required()
+              ->label(__(key: "general.user")),
+
                 TextInput::make('name')
                 ->required()
                 ->maxLength(length: 30)
@@ -72,6 +77,7 @@ class CustomerResource extends Resource
 
                  DatePicker::make('birth_date')
                  ->required()
+                 ->jalali()
                   ->label(__("general.birth_date")),   
 
                   Select::make('gender')

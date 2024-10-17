@@ -46,6 +46,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function customer() {
+        return $this->hasOne(Customer::class);
+    }
+
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');

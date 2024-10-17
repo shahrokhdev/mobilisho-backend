@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use App\Filament\Resources\ProductResource;
+use App\Models\Copen;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +19,6 @@ class CreateProduct extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-
-
         $this->formData = $data;
         return $data;
 
@@ -29,30 +28,8 @@ class CreateProduct extends CreateRecord
 
     public function afterCreate()
     {
-
-
         $storedDataId = $this->record->getKey();
-
-        // dd($storedDataId, $this->formData);
-
-
-
         $product = static::getModel()::find($storedDataId);
-
-
-
-        // dd($product);
-
         $product->attributes()->sync($this->formData['properties']);
     }
-
-//    protected function handleRecordCreation(array $data): Model
-// {
-//     $product = static::getModel()::create($data);
-
-//     $product->attributes()->sync($data['attributes']);
-    
-//     return $product;
-
-// }
 }

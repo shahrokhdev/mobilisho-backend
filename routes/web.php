@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 
 /*
