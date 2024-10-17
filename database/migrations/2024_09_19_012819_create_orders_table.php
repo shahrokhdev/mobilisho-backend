@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->default(0);
+            /* $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); */
+        /*     $table->unsignedBigInteger('copen_id')->default(0); */
+            $table->unsignedBigInteger('discount_id')->default(0);
             $table->dateTime('order_date');
-            $table->enum('status' , ['pending' , 'shipped' , 'delivered' , 'cancelled']);
+            $table->enum('status' , ['paid','pending','shipped','delivered','cancelled'])->default('pending');
             $table->string('total_amount');
             $table->enum('payment_method' , ['credit-card' , 'cash-on-delivery'])->default('credit-card');
-            $table->enum('pay_status' , ['paid' , 'pending' , 'failed']);
             $table->text('delivery_address');
-            $table->string('copen');
-            $table->string('copen_price');
             $table->string('final_price');
-            $table->float('star' , 5);
+            $table->string('copen_code')->nullable();
+            $table->text('copen_reason')->nullable();
+            $table->boolean('copen_status')->default(0);
+            $table->integer('star')->nullable();
+            $table->string('tracking_serial')->nullable();
             $table->timestamps();
         });
     }
