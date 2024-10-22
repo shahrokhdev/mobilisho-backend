@@ -11,6 +11,7 @@ return [
     'tickets' => 'Tickets',
     'article_categories' => "Article categories" ,
     'contacts' => "Contacts" ,
+    'copens' => 'copens',
     'name' => 'name',
     'email' => 'email',
     'password' => 'password',
@@ -76,4 +77,7 @@ return [
     'quantity' => 'quantity',
     'order_items' => 'Order Items',
     'order_details' => 'Order Details',
+    'support_messages' => 'support messages',
+    'filter_by_state' => 'filter by state',
+    'filter_by_priority' => 'filter by priority',
 ];
