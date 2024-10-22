@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TicketResource\Pages;
-use App\Filament\Resources\TicketResource\RelationManagers;
-use App\Models\Ticket;
-use Filament\Actions\CreateAction;
+use App\Filament\Resources\SupportTicketResource\Pages;
+use App\Filament\Resources\SupportTicketResource\RelationManagers;
+use App\Models\SupportTicket;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -14,16 +14,16 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Columns\FilesColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TicketResource extends Resource
+class SupportTicketResource extends Resource
 {
-    protected static ?string $model = Ticket::class;
+    protected static ?string $model = SupportTicket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -51,15 +51,21 @@ class TicketResource extends Resource
         return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
 
-    public static function canCreate(): bool
-    {
-        return false; 
-    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('priority')
+                Select::make('user_id')
+                ->relationship('user' , 'username')
+               ->label(__(key: "general.user_id")),
+
+                TextInput::make(name: 'subject')
+                ->required()
+                ->maxLength(length: 30)
+                 ->label(__("general.subject")),        
+      
+               Select::make('priority')
                 ->options([
                     'low' => 'low',
                     'medium' => 'medium',
@@ -67,17 +73,7 @@ class TicketResource extends Resource
                     'important' => 'important',
                 ])->label(__(key: "general.priority")),
 
-                TextInput::make(name: 'title')
-                ->required()
-                ->maxLength(length: 30)
-                 ->label(__("general.title")),        
-
-                Textarea::make('description')
-                ->required()
-                ->maxLength(500)
-                 ->label(__("general.description")),              
-
-                 FileUpload::make('attached_file')->required()
+                  FileUpload::make('attached_file')
                      ->label(__("general.attached_file")), 
 
                   Select::make('state')
@@ -86,6 +82,10 @@ class TicketResource extends Resource
                       'pending' => 'pending',
                       'answered' => 'answered',
                   ])->label(__(key: "general.state")),
+
+                  DatePicker::make('completed_at')
+                  ->jalali()
+                  ->label(__('general.completed_at')),
             ]);
     }
 
@@ -93,19 +93,32 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label(__('general.title')),
-                TextColumn::make('description')->label(__('general.description')),
-                TextColumn::make('state')->label(__('general.state')),
+                TextColumn::make('user.name')->label(__('general.subject')),
+                TextColumn::make('subject')->label(__('general.subject')),
                 TextColumn::make('priority')->label(__('general.priority')),
-            /*     FileUploadColumn::make('attached_file')
-                ->multiple()
-                ->openable(), */
+                TextColumn::make('state')->label(__('general.state')),
+                TextColumn::make('completed_at')->label(__('general.completed_at')),
                 TextColumn::make('created_at')->label(__('general.created_at')),
                 TextColumn::make('updated_at')->label(__('general.updated_at')),
             ])
             ->filters([
-                //
+                SelectFilter::make(name: 'state')
+                ->options([
+                    'rejected' => 'rejected',
+                    'pending' => 'medium',
+                    'answered' => 'answered',
+                ])->label(__('general.filter_by_state')),
+
+
+                SelectFilter::make(name: 'priority')
+                  ->options([
+                      'low' => 'low',
+                      'medium' => 'medium',
+                      'high' => 'high',
+                      'important' => 'important',
+                      ])->label(__('general.filter_by_priority'))
             ])
+
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button(),
@@ -128,16 +141,9 @@ class TicketResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTickets::route('/'),
-            'create' => Pages\CreateTicket::route('/create'),
-            'edit' => Pages\EditTicket::route('/{record}/edit'),
+            'index' => Pages\ListSupportTickets::route('/'),
+            'create' => Pages\CreateSupportTicket::route('/create'),
+            'edit' => Pages\EditSupportTicket::route('/{record}/edit'),
         ];
-    }
-
-    public function replyToTicket($reply)
-    {
-        // Logic to reply to the ticket goes here
-        // You can use the $reply variable to store the reply message
-        // and then update the ticket status or add a new comment to the ticket
     }
 }

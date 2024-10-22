@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CommentsTableSeeder::class);
         $this->call(ArticlesTableSeeder::class);
         $this->call(CategoryProductTableSeeder::class);
-        $this->call(TicketsTableSeeder::class);
         $this->call(ContactsTableSeeder::class);
         $this->call(ArticleCategoriesTableSeeder::class);
         $this->call(AttributesTableSeeder::class);
@@ -34,5 +33,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AttributeProductTableSeeder::class);
         $this->call(CopensTableSeeder::class);
         $this->call(CopenCustomerTableSeeder::class);
+        $this->call(OrderProductTableSeeder::class);
+        $this->call(SupportTicketsTableSeeder::class);
+        $this->call(SupportMessagesTableSeeder::class);
     }
 }

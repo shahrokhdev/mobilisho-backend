@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('support_tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->default(0);
-            $table->string('title');
-            $table->string('description');
+            $table->string('subject');
             $table->enum('priority' , ['low' , 'medium' , 'high', 'important'])->default('medium');
+            $table->string('attached_file')->nullable();
             $table->enum('state' , ['rejected' , 'pending' , 'answered'])->default('pending');
-            $table->string('attached_file');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('support_tickets');
     }
 };
