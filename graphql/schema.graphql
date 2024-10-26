@@ -5,6 +5,8 @@
 #import ./User/user.graphql
 #import ./Contact/contact.graphql
 #import ./Ticket/ticket.graphql
+#import ./Ticket/supportTicket.graphql
+#import ./Ticket/supportMessage.graphql
 #import ./Product/product.graphql
 #import ./Product/attribute.graphql
 #import ./Product/attributeValue.graphql

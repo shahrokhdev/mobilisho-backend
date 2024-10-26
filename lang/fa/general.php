@@ -79,4 +79,7 @@ return [
      'support_messages' => 'پیام های تیکت پشتیبانی',
      'filter_by_state' => 'فیلتر بر اساس وضعیت تیکت',
      'filter_by_priority' => 'فیلتر بر اساس اولویت تیکت',
+     'show_articles_comments' => 'نمایش نظرات مقالات',
+     'show_articles_products' => 'نمایش نظرات محصولات',
+     "show_by"=>"نمایش بر اساس"
 ];

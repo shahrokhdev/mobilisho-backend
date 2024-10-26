@@ -80,4 +80,7 @@ return [
     'support_messages' => 'support messages',
     'filter_by_state' => 'filter by state',
     'filter_by_priority' => 'filter by priority',
+    'show_articles_comments' => 'show article comments',
+    'show_articles_products' => 'show product comments',
+    "show_by"=>"show_by"
 ];
