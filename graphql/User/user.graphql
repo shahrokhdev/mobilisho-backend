@@ -7,10 +7,16 @@ type User {
     phone_number: String!
     email_verified_at: String!
     comments: [Comment!]
-    tickets: [Ticket!]
+    tickets: [SupportTicket!]
 }
 
 extend type Query {
     users: [User!]! @all
     findUser(id: ID @eq): User @find
+}
+
+
+extend type Mutation{
+  RegisterUser(name: String!, username: String!,email:String!, password: String, phone_number: String!,state:String): User @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@registerUser")
+  loginUser(phone_number: String!): User @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@loginUser")
 }
