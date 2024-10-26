@@ -20,6 +20,7 @@ class Product extends Model
             ->saveSlugsTo('slug');
     }
 
+
     public function categories(){
         return $this->belongsToMany(Category::class);
     }
@@ -35,6 +36,11 @@ class Product extends Model
 
     public function orders() {
         return $this->belongsToMany(Order::class);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
 

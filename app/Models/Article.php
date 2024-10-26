@@ -18,5 +18,9 @@ class Article extends Model
          return $this->belongsTo(ArticleCategory::class);
     }
 
+    public function comments() {
+         return $this->morphMany(Comment::class , 'commentable');
+    }
+
 
 }

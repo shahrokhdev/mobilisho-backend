@@ -9,6 +9,7 @@ type Product {
     inventory: String!
     attributes: [Attribute!]
     categories: [Category!]
+    comments: [Comment]
 }
 
 extend type Query {

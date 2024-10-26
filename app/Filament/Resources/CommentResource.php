@@ -20,6 +20,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -90,10 +91,31 @@ class CommentResource extends Resource
                TextColumn::make('created_at')->label(__('general.created_at')),
             ])
             ->filters([
-                Filter::make(__('general.approved'))
-                ->query(fn (Builder $query): Builder => $query->where('status', 'approved')),
-                Filter::make(__('general.pending'))
-                ->query(fn (Builder $query): Builder => $query->where('status', 'pending'))
+                SelectFilter::make(__('status'))
+                ->options([
+                    'approved' => __('general.approved'),
+                    'pending' => __('general.pending'),
+                ])->label(__('general.status')),
+
+                SelectFilter::make('commentable_id')
+                ->options([
+                    1 => __('general.articles'),
+                    2 =>__('general.products'),
+                ])->label(__("general.show_by"))
+             
+            
+             /*    SelectFilter::make('commentable_type')
+                ->options([
+                    'App\Models\Product' => __('general.show_products_comments'),
+                    'pending' => __('general.show_articles_comments'),
+                ])->label(__('general.commentable_type')), */
+                
+/* 
+              Filter::make("commentable_type")
+                ->query(fn (Builder $query): Builder => $query->where('commentable_type', 'App\Models\Product')),
+
+                Filter::make("commentable_type")
+                ->query(fn (Builder $query): Builder => $query->where('commentable_type', 'App\Models\Article')) */
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
