@@ -1,0 +1,18 @@
+type SupportMessage {
+    id: ID!
+    content: String!
+    user: User
+    ticket : SupportTicket
+    created_at:String
+    updated_at:String
+}
+
+extend type Query {
+    messages: [SupportMessage!]! @all
+    findMessage(id: ID @eq): SupportMessage @find
+}
+
+
+extend type Mutation{
+  createMessage(content:String!): SupportMessage @field(resolver: "App\\GraphQL\\Mutations\\TicketMutation@createMessage")
+}

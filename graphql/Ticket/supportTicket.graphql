@@ -1,0 +1,21 @@
+type SupportTicket {
+    id: ID!
+    subject: String!
+    priority: String!
+    attached_file: String!
+    state: String!
+    completed_at: String!
+    user:User
+    messages: [SupportMessage]
+}
+
+extend type Query {
+    tickets: [SupportTicket!]! @all
+    findTicket(id: ID @eq): SupportTicket @find
+}
+
+
+
+extend type Mutation{
+  createTicket(user_id: Int  , subject:String! ,priority:String!,attached_file: String, state: String!, completed_at: String): SupportTicket @field(resolver: "App\\GraphQL\\Mutations\\TicketMutation@createTicket")
+}
