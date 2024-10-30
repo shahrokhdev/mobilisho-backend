@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
             $table->enum('discount_type',['percent' , 'price']);      
             $table->string('discount_value');      
             $table->date('start_date');

@@ -1,0 +1,13 @@
+type Discount {
+    id: ID!
+    discount_type: String!
+    discount_value: String!
+    start_date: String!
+    end_date: String!
+    products: [Product]!
+}
+
+extend type Query {
+    discounts: [Discount!]! @all
+    findDiscount(id: ID @eq): Discount @find
+}

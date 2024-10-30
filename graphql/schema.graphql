@@ -11,5 +11,6 @@
 #import ./Product/product.graphql
 #import ./Product/attribute.graphql
 #import ./Product/attributeValue.graphql
+#import ./Product/Discount/discount.graphql
 #import ./Customer/customer.graphql
 #import ./Order/order.graphql

@@ -30,8 +30,9 @@ class Product extends Model
          return $this->belongsToMany(Attribute::class, 'attribute_product')->withPivot(['value_id']);
     }
 
-    public function discounts() {
-        return $this->belongsTo(Product::all());
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
     }
 
     public function orders() {
@@ -42,6 +43,5 @@ class Product extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
 
 }

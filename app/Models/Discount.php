@@ -9,9 +9,11 @@ class Discount extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['discount_type','discount_value','start_date','end_date'];
 
-    public function product() {
-         return $this->belongsTo(Product::all());
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
 }

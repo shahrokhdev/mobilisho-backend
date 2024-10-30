@@ -7,12 +7,28 @@ type Product {
     price: String!
     view_count: String!
     inventory: String!
+    best_selling:String!
     attributes: [Attribute!]
     categories: [Category!]
     comments: [Comment]
+    discount: Discount
 }
 
 extend type Query {
     products: [Product!]! @all
     findProduct(id: ID @eq): Product @find
+    amazingDiscounts: [Product]
+    AllAmazingDiscounts: [Product] @field(resolver: "App\\GraphQL\\Queries\\AmazingDiscounts@AllAmazingDiscounts")
+    AllBestSelling: [Product]  @field(resolver: "App\\GraphQL\\Queries\\BestSelling@AllBestSelling")
+    bestSelling: [Product]
+}
+
+input SubOrderBy {
+    column: String!
+    order: SortOrderEnum!
+}
+
+enum SortOrderEnum {
+    ASC
+    DESC
 }
