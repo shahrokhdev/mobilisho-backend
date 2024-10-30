@@ -11,6 +11,7 @@ final class FamousCategory
     /** @param  array{}  $args */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Category::orderBy('most_searched', 'desc')->take(3)->get();
+        $limit = $args['first'] ?? 3;
+        return Category::orderBy('most_searched', 'desc')->take($limit)->get();
     }
 }
