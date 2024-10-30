@@ -1,10 +1,11 @@
+
+#import ./User/auth.graphql
 #import ./Category/category.graphql
 #import ./Article/articleCategory.graphql
 #import ./Article/Article.graphql
 #import ./Comment/comment.graphql
 #import ./User/user.graphql
 #import ./Contact/contact.graphql
-#import ./Ticket/ticket.graphql
 #import ./Ticket/supportTicket.graphql
 #import ./Ticket/supportMessage.graphql
 #import ./Product/product.graphql
