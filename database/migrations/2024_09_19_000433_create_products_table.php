@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text(column: 'description');
             $table->text(column: 'image')->nullable();
             $table->string(column: 'price');
+            $table->string("dis_price")->nullable();
             $table->integer(column: 'inventory');
             $table->integer('best_selling')->default(0);
             $table->integer(column: 'view_count')->default(0);

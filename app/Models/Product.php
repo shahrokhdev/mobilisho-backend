@@ -11,7 +11,7 @@ class Product extends Model
 {
     use HasFactory;
     use HasPersianSlug;
-    protected $fillable = ['title','description','image','price','inventory'];
+    protected $fillable = ['discount_id','title','description','image','price','dis_price','inventory'];
 
     public function getSlugOptions(): SlugOptions
     {

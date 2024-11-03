@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_id')->default(0);
-            /* $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade'); */
-        /*     $table->unsignedBigInteger('copen_id')->default(0); */
             $table->unsignedBigInteger('discount_id')->default(0);
             $table->dateTime('order_date');
             $table->enum('status' , ['paid','pending','shipped','delivered','cancelled'])->default('pending');

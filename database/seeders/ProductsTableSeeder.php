@@ -22,6 +22,7 @@ class ProductsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
+                'discount_id' => 1,
                 'title' => 'محصول آزماشی',
                 'slug' => 'محصول-آزماشی',
                 'description' => 'این محصول ازمایشی است',
@@ -30,11 +31,12 @@ class ProductsTableSeeder extends Seeder
                 'inventory' => 10,
                 'view_count' => 0,
                 'created_at' => '2024-09-24 17:10:36',
-                'updated_at' => '2024-09-24 17:10:36',
+                'updated_at' => '2024-10-30 14:02:50',
             ),
             1 => 
             array (
                 'id' => 2,
+                'discount_id' => 2,
                 'title' => 'موبایل سامسونگ note 10',
                 'slug' => 'موبایل-سامسونگ-note-10',
                 'description' => 'موبایل سامسونگ note 10 اصل در سه رنگ',
@@ -43,11 +45,12 @@ class ProductsTableSeeder extends Seeder
                 'inventory' => 10,
                 'view_count' => 0,
                 'created_at' => '2024-09-24 17:18:10',
-                'updated_at' => '2024-09-24 17:18:10',
+                'updated_at' => '2024-10-30 14:03:40',
             ),
             2 => 
             array (
                 'id' => 3,
+                'discount_id' => 1,
                 'title' => 'گوشی سامسونگ مدل ultra',
                 'slug' => 'گوشی-سامسونگ-مدل-ultra',
                 'description' => ' گوشی سامسونگ مدل ultra
@@ -57,20 +60,21 @@ class ProductsTableSeeder extends Seeder
                 'inventory' => 10,
                 'view_count' => 0,
                 'created_at' => '2024-09-27 21:56:36',
-                'updated_at' => '2024-09-27 21:56:36',
+                'updated_at' => '2024-10-30 14:42:31',
             ),
             3 => 
             array (
-                'id' => 4,
-                'title' => 'wetwqetqwt',
-                'slug' => 'wetwqetqwt',
-                'description' => 'qwetqet',
-                'image' => '01JA0P7GA1AD3AZJKBV99CC780.jpg',
-                'price' => '1314',
-                'inventory' => 1,
+                'id' => 5,
+                'discount_id' => 1,
+                'title' => 'test',
+                'slug' => 'test',
+                'description' => 'test',
+                'image' => '01JBEVP1MG2Z935YH9XE1GATM9.jpg',
+                'price' => '54000000',
+                'inventory' => 10,
                 'view_count' => 0,
-                'created_at' => '2024-10-12 15:40:51',
-                'updated_at' => '2024-10-12 15:40:51',
+                'created_at' => '2024-10-30 14:01:14',
+                'updated_at' => '2024-10-30 14:02:14',
             ),
         ));
         
