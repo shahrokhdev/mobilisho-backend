@@ -23,7 +23,7 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
     
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
 
 
@@ -66,7 +66,9 @@ class ArticleResource extends Resource
                 ->maxLength(255)
                  ->label(__("general.description")),              
 
-                 FileUpload::make('image')->required(),
+                 FileUpload::make('image')
+                 ->label(__('general.image'))
+                 ->required(),
             ]);
     }
 

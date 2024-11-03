@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -61,16 +64,17 @@ class CategoryResource extends Resource
                 ->maxLength(255)
                  ->label(__("general.name")),              
 
-                 FileUpload::make('image')->required(),
+                 FileUpload::make('image')
+                 ->required()
+                 ->label(__("general.image")),     
                  
                  $update ? Select::make('parent_id')
                  ->relationship(name:'child' , titleAttribute:'name')
                  ->preload()
-                 ->label(__("general.categoryName")): TextInput::make('parent_id')
+                 ->label(__("general.parentName")): TextInput::make('parent_id')
                  ->type('hidden')
                  ->hiddenLabel()
                   ->default($parent_id),    
-
             ]);
             
     }
@@ -82,23 +86,27 @@ class CategoryResource extends Resource
                 TextColumn::make('name')->label(__('general.categoryName')),
                 ImageColumn::make('image')->label(__('general.image')),
                 TextColumn::make('child.name')->label(__('general.subcategories'))->limit(25),
-                  TextColumn::make('created_at')->label(__('general.created_at')),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\CreateAction::make()->url(fn (Model $category) => "/admin/categories/create?parent_id={$category->id}")->button()->label(__('general.create-subcategory')),
-              /*   Tables\Actions\ViewAction::make()->button()->color('info')->color('info'), */
                 Tables\Actions\EditAction::make()->button()->color('warning'),
                 Tables\Actions\DeleteAction::make()->button(),
                 ActionsViewAction::make()
                 ->form([
-                    TextEntry::make('categories.child')
-                    ->listWithLineBreaks()
-                    ->limitList(3)
-                    ->expandableLimitedList()
-                ]),
+                    TextInput::make('name')
+                     ->label(__("general.name")),
+
+                     FileUpload::make(name: 'image')
+                     ->label(__("general.image")),     
+
+                     Select::make('parent_id')
+                     ->relationship(name:'child' , titleAttribute:'name')
+                    ->label(__("general.parentName"))
+                    
+                ])->button()->color('info'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

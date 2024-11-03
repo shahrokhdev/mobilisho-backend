@@ -60,4 +60,8 @@ class CreateOrder extends CreateRecord
               }
           }
     }
+
+    public function getRedirectUrl(): string { 
+        return $this->getResource()::getURl('index');
+     }
 }

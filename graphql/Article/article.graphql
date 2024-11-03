@@ -4,10 +4,12 @@ type Article {
     description: String!
     image: String!
     view_count: String!
+    created_at:String
     category: ArticleCategory!
 }
 
 extend type Query {
     articles: [Article!]! @all
     findArticle(id: ID @eq): Article @find
+    lastArticles: [Article]! 
 }

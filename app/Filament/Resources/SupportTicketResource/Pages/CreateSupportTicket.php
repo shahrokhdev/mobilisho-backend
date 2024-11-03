@@ -9,4 +9,7 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSupportTicket extends CreateRecord
 {
     protected static string $resource = SupportTicketResource::class;
+    public function getRedirectUrl(): string { 
+        return $this->getResource()::getURl('index');
+     }
 }

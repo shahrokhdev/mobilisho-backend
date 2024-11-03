@@ -25,4 +25,7 @@ class CreateCopen extends CreateRecord
          }
 
     }
+    public function getRedirectUrl(): string { 
+        return $this->getResource()::getURl('index');
+     }
 }

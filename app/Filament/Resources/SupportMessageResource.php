@@ -22,7 +22,7 @@ class SupportMessageResource extends Resource
 {
     protected static ?string $model = SupportMessage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-view-columns';
 
     public static function getpluralModelLabel(): string
     {

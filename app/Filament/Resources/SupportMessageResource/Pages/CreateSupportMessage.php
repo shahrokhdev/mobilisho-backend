@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSupportMessage extends CreateRecord
 {
     protected static string $resource = SupportMessageResource::class;
+
+    public function getRedirectUrl(): string { 
+        return $this->getResource()::getURl('index');
+     }
 }

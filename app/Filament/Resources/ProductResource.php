@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\AttributeValue;
 use App\Models\Category;
+use App\Models\Discount;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Component;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
@@ -32,7 +34,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function getpluralModelLabel(): string
     {
@@ -86,7 +88,28 @@ class ProductResource extends Resource
                   ->mask(RawJs::make('$money($input)'))
                  ->stripCharacters(',')
                  ->numeric() ,     
-    
+
+                 Select::make('discount_id')
+                 ->relationship(name:'discount' , titleAttribute:'discount_value')
+                 ->preload()
+                 ->live()
+                 ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
+                     $dis_value = Discount::find($get("discount_id"))->discount_value;
+                    $price_str = str_replace(",", "", $get("price"));
+                    $price = intval($price_str);
+                    $discount_amount = ( $price * $dis_value) / 100 ;
+                    $final_price = $price - $discount_amount ;
+                    $set('dis_price' , $final_price);                         
+                })
+                  ->label(__("general.discount_percent")),   
+
+                  TextInput::make('dis_price')
+                  ->maxLength(255)
+                   ->label(__("general.dis_price"))
+                    ->mask(RawJs::make('$money($input)'))
+                   ->stripCharacters(',')
+                   ->numeric(),
+                  
                  FileUpload::make('image')
                 ->required()
                  ->label(__("general.image")),     

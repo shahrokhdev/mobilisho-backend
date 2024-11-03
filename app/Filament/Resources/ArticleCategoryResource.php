@@ -17,7 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Tables\Actions\CreateAction;
 class ArticleCategoryResource extends Resource
 {
     protected static ?string $model = ArticleCategory::class;
@@ -29,6 +29,7 @@ class ArticleCategoryResource extends Resource
     {
         return __(key: 'general.article_categories');
     }
+
 
 
     public static function getNavigationLabel(): string
@@ -50,22 +51,20 @@ class ArticleCategoryResource extends Resource
     {
         return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
+
+    
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-             /*    Select::make('category_id')
-                ->relationship(name:'categories' , titleAttribute:'name')
-                ->multiple()
-                ->preload()
-                 ->label(__("general.title")),       */
-
                 TextInput::make('name')
                 ->required()
                 ->maxLength(255)
                  ->label(__("general.name")),              
 
-                 FileUpload::make('image')->required(),
+                 FileUpload::make('image')
+                 ->required()
+                 ->label(__('general.image'))
             ]);
     }
 

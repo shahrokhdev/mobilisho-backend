@@ -32,4 +32,8 @@ class CreateProduct extends CreateRecord
         $product = static::getModel()::find($storedDataId);
         $product->attributes()->sync($this->formData['properties']);
     }
+
+    public function getRedirectUrl(): string { 
+        return $this->getResource()::getURl('index');
+     }
 }
