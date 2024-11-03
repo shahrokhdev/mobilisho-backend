@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(SupportTicket::class);
     }
 
+
+    public function codes()
+    {
+        return $this->hasMany(ActiveCode::class , 'user_id');
+    }
     
 
 }

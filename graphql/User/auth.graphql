@@ -1,6 +1,7 @@
 extend type Query {
     me: User! @auth @guard
 }
+
 extend type Mutation {
     login(phone_number: String, password: String!, device: String): String!
 
@@ -9,8 +10,12 @@ extend type Mutation {
         username: String!
         email: String!
         password: String
-        phone_number: String!
-        state: String
+        phone_number: String! 
     ): User
         @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@registerUser")
+
+
+     verifyUser(code: String!, phone_number: String!): User  @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@verifyUser")
+
 }
+ 
