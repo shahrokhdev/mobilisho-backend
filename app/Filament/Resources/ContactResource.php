@@ -51,20 +51,15 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('first_name')
+                TextInput::make('full_name')
                 ->required()
-                ->maxLength(length: 30)
-                 ->label(__("general.first_name")),        
-
-                TextInput::make('last_name')
+                ->maxLength(length: 70)
+                 ->label(__("general.full_name")),       
+                      
+                TextInput::make('title')
                 ->required()
-                ->maxLength(50)
-                 ->label(__("general.last_name"))
-                 ,              
-                TextInput::make('email')
-                ->required()
-                ->maxLength(50)
-                 ->label(__("general.email")),    
+                ->maxLength(100)
+                 ->label(__("general.title")),    
 
                 TextInput::make('phone_number')
                 ->required()
@@ -75,13 +70,6 @@ class ContactResource extends Resource
                  ->required()
                  ->maxLength(500)
                   ->label(__("general.message")),
-
-                  Select::make('status')
-                  ->options([
-                      'rejected' => 'rejected',
-                      'pending' => 'pending',
-                      'answered' => 'answered',
-                  ])->label(__(key: "general.status"))
             ]);
     }
 
@@ -89,16 +77,10 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('first_name')->label(__('general.first_name')),
-                TextColumn::make('last_name')->label(__('general.last_name')),
-                TextColumn::make('email')->label(__('general.email')),
+                TextColumn::make('full_name')->label(__('general.full_name')),
+                TextColumn::make('title')->label(__('general.title')),
                 TextColumn::make('phone_number')->label(__('general.phone_number')),
                 TextColumn::make('message')->label(__('general.message'))->limit(20),
-                SelectColumn::make('status')->label(__('general.status')) ->options([
-                    'rejected' => __('general.rejected'),
-                    'pending' => __('general.pending'),
-                    'answered' => __('general.answered'),
-                ]),
                 TextColumn::make('created_at')->label(__('general.created_at')),
             ])
             ->filters([

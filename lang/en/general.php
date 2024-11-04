@@ -18,6 +18,7 @@ return [
     'password' => 'password',
     'username' => 'username',
     'phone_number' => 'phone number',
+    'full_name' => 'fullname',
     'first_name' => 'first name',
     'last_name' => 'last name',
     'message' => 'message',

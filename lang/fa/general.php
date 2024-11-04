@@ -17,6 +17,7 @@ return [
     'email' => 'ایمیل',
     'password' => 'رمز عبور',
     'phone_number' => 'شماره تلفن',
+    'full_name' => 'نام و نام خانوادگی',
     'first_name' => 'نام',
     'last_name' => 'نام خانوادگی',
     'message' => 'پیام شما',

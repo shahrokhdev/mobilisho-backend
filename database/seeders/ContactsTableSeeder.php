@@ -22,12 +22,10 @@ class ContactsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'first_name' => 'سعید',
-                'last_name' => 'سعیدی',
-                'email' => 'saeed@gmail.com',
+                'title' => 'مشکل در عضویت' ,
+                'full_name' => 'سعید سعیدی' ,
                 'phone_number' => '09366361399',
                 'message' => 'سلام مرسی از سایت خوبتون',
-                'status' => 'answered',
                 'created_at' => '2024-09-25 23:18:49',
                 'updated_at' => '2024-09-25 23:25:32',
             ),
