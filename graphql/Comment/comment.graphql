@@ -1,12 +1,15 @@
 type Comment {
     id: ID!
+    user_id:Int!
     user: User!
     commentable: Commentable
     parent: Comment
+    commentable_id: Int!
+    commentable_type: String!
     child: [Comment!]
     comment: String!
     status: String!
-    createdAt: DateTime!
+    created_at: String!
     updatedAt: DateTime!
 }
 
@@ -15,6 +18,15 @@ extend type Query {
     findComment(id: ID @eq): Comment @find
 }
 
-extend type Mutation{
- createComment(commentableType:String! ,commentableId:Int!,comment: String!, status: String!, parent: ID): Comment @field(resolver: "App\\GraphQL\\Mutations\\CommentMutation@createComment")
+extend type Mutation {
+    createComment(
+        user_id:Int
+        commentable_id: Int!
+        commentable_type: String!
+        comment: String!
+        parent: ID
+    ): Comment
+        @field(
+            resolver: "App\\GraphQL\\Mutations\\CommentMutation@createComment"
+        )
 }

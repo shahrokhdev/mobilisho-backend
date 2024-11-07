@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Comment extends Model
 {
     use HasFactory;
-    protected $fillable = ['comment' , 'parent_id' , 'approved' , 'commentable_id' , 'commentable_type' , "user_id"];
+    protected $fillable = ['comment' , 'parent' , 'approved' , 'commentable_id' , 'commentable_type' , "user_id","status"];
 
 
 

@@ -12,14 +12,12 @@ final class CommentMutation
     public function createComment($root, array $args, GraphQLContext $context)
     {
         $comment = new Comment;
-        $comment->user_id = 1;
-        $comment->commentable_type = $args['commentableType'];
-        $comment->commentable_id = $args['commentableId'];
+        $comment->user_id = 2;
+        $comment->commentable_id = $args['commentable_id'];
+        $comment->commentable_type = $args['commentable_type'];
         $comment->comment = $args['comment'];
         $comment->parent = $args['parent'] ?? 0;
-        $comment->status = 'pending'; // Default status
         $comment->save();
-
         return $comment;
     } 
 }

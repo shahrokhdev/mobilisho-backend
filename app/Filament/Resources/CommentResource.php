@@ -6,6 +6,8 @@ use App\Filament\Resources\CommentResource\Pages;
 use App\Filament\Resources\CommentResource\RelationManagers;
 use App\Models\Comment;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
+use Filament\Actions\ReplicateAction;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
@@ -23,8 +25,15 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use App\Filament\Exports\CommentExporter;
+use Filament\Actions\ExportAction;
+use Filament\Forms\Components\Hidden;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+use Filament\Pages\Actions\Modal\Actions\ButtonAction;
 
 class CommentResource extends Resource
 {
@@ -57,6 +66,8 @@ class CommentResource extends Resource
         return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
 
+    
+
     public static function canCreate(): bool
      {
          return false; 
@@ -78,7 +89,7 @@ class CommentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
+        ->columns([
                  TextColumn::make('user.username')->label(__('general.username')),
                  TextColumn::make('commentable.title')->label(__('general.comment-subject')),
                BadgeColumn::make('status')
@@ -102,20 +113,6 @@ class CommentResource extends Resource
                     1 => __('general.articles'),
                     2 =>__('general.products'),
                 ])->label(__("general.show_by"))
-             
-            
-             /*    SelectFilter::make('commentable_type')
-                ->options([
-                    'App\Models\Product' => __('general.show_products_comments'),
-                    'pending' => __('general.show_articles_comments'),
-                ])->label(__('general.commentable_type')), */
-                
-/* 
-              Filter::make("commentable_type")
-                ->query(fn (Builder $query): Builder => $query->where('commentable_type', 'App\Models\Product')),
-
-                Filter::make("commentable_type")
-                ->query(fn (Builder $query): Builder => $query->where('commentable_type', 'App\Models\Article')) */
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
@@ -149,8 +146,40 @@ class CommentResource extends Resource
                 ->icon('heroicon-s-x-mark')
                 ->label(__('general.delete')),
                 Tables\Actions\ViewAction::make()->button()->color('info'),
+                Tables\Actions\Action::make('reply')
+               ->form([
+                TextInput::make('user.username')->default(fn(Comment $record)=> $record->user->username)->required(),
+                TextInput::make('commentable.title')->default(fn(Comment $record)=> $record->commentable->title)->required(),
+                Hidden::make('commentable_id')->required()->default(fn(Comment $record)=> $record->commentable_id),
+                Hidden::make('commentable_type')->required()->default(fn(Comment $record)=> $record->commentable_type),
+                Hidden::make('child')->default(fn(Comment $record)=> $record->id),
+                TextInput::make('comment')
+                ->required()
+                ->columnSpan('full')
+                ->maxLength(500)
+                 ->label(__("general.comment")),     
+               ])
+                ->action(function ($data) {
+                     $comment = new Comment();
+                      $comment->create([
+                         'user_id' => auth()->user()->id ,
+                         'commentable_id' => $data['commentable_id'] ,
+                         'commentable_type' => $data['commentable_type'] ,
+                         'parent' => $data['child'] ,
+                         'comment' => $data['comment'],
+                         'status' => 'approved'
+                      ]);
+                      Notification::make()
+                      ->title(__("general.created"))
+                      ->success()
+                      ->send();
+                })
+                ->button()
+                ->color('warning')
+                ->label(__("general.reply")),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
+             
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -172,5 +201,15 @@ class CommentResource extends Resource
             'index' => Pages\ListComments::route('/'),
             'edit' => Pages\EditComment::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+       return $infolist
+       ->schema([
+            TextEntry::make('user.username')->label(__("general.username")),
+            TextEntry::make('comment')->label(__("general.comment")),
+            TextEntry::make(name: 'child.comment')->label(__("general.admin-reply"))
+       ]);    
     }
 }
