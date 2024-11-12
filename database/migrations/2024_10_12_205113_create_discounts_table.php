@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->enum('discount_type',['percent' , 'price']);      
+            $table->enum('state',['expired' , 'unexpire'])->default('unexpire');      
             $table->string('discount_value');      
             $table->date('start_date');
             $table->date('end_date');

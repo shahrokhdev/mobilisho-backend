@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
      protected function schedule(Schedule $schedule)
      {
          $schedule->command('copen:expire')->daily();
+         $schedule->command('discount:expire')->daily();
      }
 
     protected function commands(): void

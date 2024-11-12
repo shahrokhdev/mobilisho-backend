@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -63,7 +64,13 @@ class DiscountResource extends Resource
                   TextInput::make('discount_value')->
                   required()
                   ->label(__('general.discount_value')),
-
+                  
+                  Select::make('state')
+                  ->options([
+                      'unexpire' => __("general.unexpired"),
+                      'expired' =>__("general.expired")
+                  ])->label(__(key: "general.state")),
+                  
                   DatePicker::make('start_date')
                   ->required()
                   ->jalali()
@@ -89,6 +96,15 @@ class DiscountResource extends Resource
                  ->searchable(isIndividual:true)
                   ->label(__('general.discount_value')),
 
+                  BadgeColumn::make('state')
+                  ->getStateUsing(function (Discount $record){
+                       return $record->isExpired() ? "unexpire" :"expired"; 
+                  })->colors([
+                     'success' => "unexpire",
+                     'danger' => 'expired',
+                  ])->searchable(isIndividual:true)
+                  ->label(__('general.status')),  
+                  
                 TextColumn::make('start_date')
                  ->searchable(isIndividual:true)
                  ->jalaliDate()

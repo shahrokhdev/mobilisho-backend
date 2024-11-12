@@ -9,11 +9,16 @@ class Discount extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['discount_type','discount_value','start_date','end_date'];
+    protected $fillable = ['discount_type','discount_value','start_date','end_date','state'];
 
     public function products()
     {
         return $this->hasMany(Product::class);
     }
+
+    public function isExpired() {
+        return $this->state == 'unexpire';
+    }
+
 
 }
