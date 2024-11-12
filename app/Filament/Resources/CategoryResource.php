@@ -4,19 +4,28 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
+use App\Models\Comment;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ViewAction as ActionsViewAction;
+use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -58,23 +67,24 @@ class CategoryResource extends Resource
         $update = request()->routeIs('filament.admin.resources.categories.edit');
 
         return $form
-            ->schema([
+            ->schema([ 
                 TextInput::make('name')
                 ->required()
                 ->maxLength(255)
                  ->label(__("general.name")),              
 
                  FileUpload::make('image')
-                 ->required()
                  ->label(__("general.image")),     
-                 
-                 $update ? Select::make('parent_id')
-                 ->relationship(name:'child' , titleAttribute:'name')
-                 ->preload()
-                 ->label(__("general.parentName")): TextInput::make('parent_id')
-                 ->type('hidden')
-                 ->hiddenLabel()
-                  ->default($parent_id),    
+
+                 Hidden::make('parent_id')
+                  ->default($parent_id)
+                ->label(__("general.parentName")),
+
+                Select::make('parent_id')
+                ->relationship('parent', 'name')
+                ->live()
+                ->visible(fn ($livewire, $record) => $livewire instanceof EditRecord)
+                ->label(__("general.parentName")),   
             ]);
             
     }
@@ -83,30 +93,21 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('general.categoryName')),
+                TextColumn::make('name')->label(__('general.categoryName'))->searchable(isIndividual:true),
                 ImageColumn::make('image')->label(__('general.image')),
-                TextColumn::make('child.name')->label(__('general.subcategories'))->limit(25),
+                TextColumn::make('child.name')->label(__('general.subcategories'))->limit(25)->searchable(isIndividual:true),
             ])
             ->filters([
-                //
+                SelectFilter::make('parent_id')
+                ->options([
+                    0 => __('general.main-categories'),
+                ])->label(__("general.show_by"))
             ])
             ->actions([
                 Tables\Actions\CreateAction::make()->url(fn (Model $category) => "/admin/categories/create?parent_id={$category->id}")->button()->label(__('general.create-subcategory')),
+                Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button()->color('warning'),
                 Tables\Actions\DeleteAction::make()->button(),
-                ActionsViewAction::make()
-                ->form([
-                    TextInput::make('name')
-                     ->label(__("general.name")),
-
-                     FileUpload::make(name: 'image')
-                     ->label(__("general.image")),     
-
-                     Select::make('parent_id')
-                     ->relationship(name:'child' , titleAttribute:'name')
-                    ->label(__("general.parentName"))
-                    
-                ])->button()->color('info'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -115,6 +116,14 @@ class CategoryResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+       return $infolist
+       ->schema([
+            TextEntry::make('name')->label(__("general.name")),
+            TextEntry::make('child.name')->label(__("general.subcategories"))
+       ]);    
+    }
     public static function getRelations(): array
     {
         return [

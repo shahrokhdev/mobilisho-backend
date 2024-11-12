@@ -22,9 +22,14 @@ class Category extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function child(): hasMany
+    public function child()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     public function products(){
