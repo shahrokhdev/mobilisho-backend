@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,7 +55,6 @@ class CopenResource extends Resource
                 Select::make('customer_id')
                 ->relationship('customers' , 'name')
                 ->multiple()
-                ->hint(Action::make("select All"))
                 ->preload()
                 ->label(__('general.customer')),
                   
@@ -65,16 +65,16 @@ class CopenResource extends Resource
                 
                  Select::make('state')
                   ->options([
-                      'unexpire' => 'unexpire',
-                      'expired' => 'expired',
+                      'unexpire' => __("general.unexpired"),
+                      'expired' =>__("general.expired")
                   ])->label(__(key: "general.state")),
 
                  Select::make('discount_type')
                   ->options([
-                      'percentage' => 'percentage',
-                      'fixed_amount' => 'fixed_amount',
-                      'free_shipping' => 'free_shipping',
-                      'buy_one_get_one' => 'buy_one_get_one',                   
+                      'percentage' => __("general.percentage"),
+                      'fixed_amount' => __("general.fixed_amount"),
+                      'free_shipping' => __("general.free_shipping"),
+                      'buy_one_get_one' => __("general.buy_one_get_one"),                   
                   ])->label(__(key: "general.discount_type")),
 
 
@@ -101,17 +101,22 @@ class CopenResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('customer.name')
+               /*  TextColumn::make('customer.name')
                   ->searchable(isIndividual:true)
-                  ->label(__('general.Full Name')),
+                  ->label(__('general.full_name')), */
 
                   TextColumn::make('code')
                    ->searchable(isIndividual:true)
                     ->label(__('general.code')),
 
-                  TextColumn::make('state')
-                   ->searchable(isIndividual:true)
-                    ->label(__('general.state')),
+                    BadgeColumn::make('state')
+                    ->getStateUsing(function (Copen $record){
+                         return $record->isExpired() ? "unexpire" :"expired"; 
+                    })->colors([
+                       'success' => "unexpire",
+                       'danger' => 'expired',
+                    ])->searchable(isIndividual:true)
+                    ->label(__('general.status')),  
 
                   TextColumn::make('discount_type')
                    ->searchable(isIndividual:true)

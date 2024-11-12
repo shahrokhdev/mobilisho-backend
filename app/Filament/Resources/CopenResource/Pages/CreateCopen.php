@@ -25,7 +25,8 @@ class CreateCopen extends CreateRecord
          }
 
     }
-    public function getRedirectUrl(): string { 
-        return $this->getResource()::getURl('index');
-     }
+    public function isExpired()
+    {
+        return $this->end_date < now();
+    }
 }
