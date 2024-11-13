@@ -7,7 +7,7 @@ type Product {
     price: String!
     view_count: String!
     inventory: String!
-    best_selling:String!
+    best_selling: String!
     attributes: [Attribute!]
     categories: [Category!]
     comments: [Comment]
@@ -18,9 +18,20 @@ extend type Query {
     products: [Product!]! @all
     findProduct(id: ID @eq): Product @find
     amazingDiscounts: [Product]
-    AllAmazingDiscounts: [Product] @field(resolver: "App\\GraphQL\\Queries\\AmazingDiscounts@AllAmazingDiscounts")
-    AllBestSelling: [Product]  @field(resolver: "App\\GraphQL\\Queries\\BestSelling@AllBestSelling")
+    AllAmazingDiscounts: [Product]
+        @field(
+            resolver: "App\\GraphQL\\Queries\\AmazingDiscounts@AllAmazingDiscounts"
+        )
+    AllBestSelling: [Product]
+        @field(resolver: "App\\GraphQL\\Queries\\BestSelling@AllBestSelling")
     bestSelling: [Product]
+}
+
+extend type Mutation {
+    incrementView(id: ID!): Product
+        @field(
+            resolver: "App\\GraphQL\\Mutations\\IncrementViewCount@incrementView"
+        )
 }
 
 input SubOrderBy {

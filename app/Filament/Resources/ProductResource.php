@@ -25,6 +25,7 @@ use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -86,25 +87,36 @@ class ProductResource extends Resource
                 ->maxLength(255)
                  ->label(__("general.price"))
                   ->mask(RawJs::make('$money($input)'))
-                 ->stripCharacters(',')
-                 ->numeric() ,     
+                 ->stripCharacters(',')                
+                 ->numeric() 
+                 ->live()
+                 ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
+                    $dis_value = Discount::find($get("discount_id"))->discount_value;
+                    $price_str = str_replace(",", "", $state);
+                    $price = intval($price_str);
+                    $discount_amount = ( $price * $dis_value) / 100 ;
+                    $final_price = $price - $discount_amount ;
+                    $set('dis_price' , $final_price);        
+                }),     
 
                  Select::make('discount_id')
-                 ->relationship(name:'discount' , titleAttribute:'discount_value')
+                 ->options(function(Discount $discount) {
+                     return $discount->where('state','unexpire')->pluck('discount_value','id');
+                 })
                  ->preload()
                  ->live()
                  ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
-                     $dis_value = Discount::find($get("discount_id"))->discount_value;
+                    $dis_value = Discount::find($state)->discount_value;
                     $price_str = str_replace(",", "", $get("price"));
                     $price = intval($price_str);
                     $discount_amount = ( $price * $dis_value) / 100 ;
                     $final_price = $price - $discount_amount ;
-                    $set('dis_price' , $final_price);                         
+                    $set('dis_price' , $final_price);        
                 })
                   ->label(__("general.discount_percent")),   
 
                   TextInput::make('dis_price')
-                  ->maxLength(255)
+                  ->readOnly()
                    ->label(__("general.dis_price"))
                     ->mask(RawJs::make('$money($input)'))
                    ->stripCharacters(',')
@@ -182,17 +194,38 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label(__('general.name')),
-                TextColumn::make('description')->label(__('general.description')),
-                TextColumn::make('price')->label(__('general.price')),
+                TextColumn::make('title')->label(__('general.name'))->searchable(isIndividual:true),
+
+                TextColumn::make('description')->tooltip(fn (Product $record): string => $record->description)->limit(30)->label(__('general.description'))->searchable(isIndividual:true),
+
+                TextColumn::make('price')->numeric(decimalPlaces: 0)
+                ->label(__('general.price'))->searchable(isIndividual:true),
+
+                TextColumn::make('dis_price')->default(function ($record) {
+                    return $record->dis_price ?: '______';
+                })->numeric(decimalPlaces: 0)
+                ->label(__('general.dis_price'))->searchable(isIndividual:true),
+
                 ImageColumn::make('image')->label(__('general.image')),
-                TextColumn::make('inventory')->label(__('general.inventory')),
-                TextColumn::make('view_count')->label(__('general.view_count')),
-                TextColumn::make('created_at')->label(__('general.created_at')),
-                TextColumn::make('updated_at')->label(__('general.updated_at')),
+
+                TextColumn::make('inventory')->label(__('general.inventory'))->searchable(isIndividual:true),
+
+                TextColumn::make('view_count')->label(__('general.view_count'))->searchable(isIndividual:true),
+
+                TextColumn::make('created_at')->label(__('general.created_at'))->searchable(isIndividual:true)->jalaliDate(),
             ])
             ->filters([
-                //
+                Filter::make('created_at')->label(__('general.created_at'))
+                ->form([
+                    Forms\Components\DatePicker::make('created_at')->jalali(),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['created_at'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('created_at',  $date),
+                        );         
+                })
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
