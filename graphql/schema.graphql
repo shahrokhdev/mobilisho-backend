@@ -6,6 +6,7 @@
 #import ./Comment/comment.graphql
 #import ./User/user.graphql
 #import ./Contact/contact.graphql
+#import ./Search/SearchableItem.graphql
 #import ./Ticket/supportTicket.graphql
 #import ./Ticket/supportMessage.graphql
 #import ./Product/product.graphql
