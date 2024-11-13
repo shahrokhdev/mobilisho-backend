@@ -27,6 +27,6 @@ class Order extends Model
     }
 
     
-
+  
 
 }

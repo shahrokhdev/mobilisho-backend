@@ -25,6 +25,7 @@ use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -83,10 +84,10 @@ class OrderResource extends Resource
                         }
                         $component->state($ar);
                     }
-                    })
+                    })->label(__('general.add_order'))
                        ->schema([
                         Select::make('product_id')  
-                        ->label('Product')
+                        ->label(__('general.product'))
                         ->options(Product::all()->pluck('title', 'id'))
                         ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
                             $product = Product::find($state);
@@ -97,7 +98,7 @@ class OrderResource extends Resource
                         ->reactive()
                         ->live(),         
                          TextInput::make('quantity')
-                        ->label('quantity')
+                         ->label(__('general.quantity'))
                         ->required()
                         ->default(1)
                         ->numeric()
@@ -108,8 +109,9 @@ class OrderResource extends Resource
                         $set('price' , $finalPrice);                         
                     }),
                     TextInput::make('price')
-                        ->label('Price')
+                       ->label(__('general.price'))
                         ->numeric()
+                        ->readOnly()
                        ])->columns(3)               
                      ])->afterValidation(function (Get $get,Set $set) {
                            $data = $get('OrderData');
@@ -119,7 +121,7 @@ class OrderResource extends Resource
                            }
                         $set('total_amount' , $total);   
                      })
-                     ->label(__('general.order_details')),
+                    ->label(__('general.order_details')),
 
                      
                      Step::make('Order Items')
@@ -132,11 +134,11 @@ class OrderResource extends Resource
                           })
                         ->reactive()
                         ->required()
-                       ->label(__(key: "general.gender")),
+                       ->label(__(key: "general.customer")),
         
                         TextInput::make('total_amount')
                          ->live()
-   
+                         ->readOnly()
                         ->label(__("general.total_amount")),    
         
                         Textarea::make('delivery_address')  
@@ -182,6 +184,7 @@ class OrderResource extends Resource
                           ->label(__("general.copen_code")),   
           
                          TextInput::make('final_price')
+                         ->readOnly()
                          ->live()
                           ->label(__("general.final_price")),   
                   
@@ -191,17 +194,17 @@ class OrderResource extends Resource
                           Select::make('status')
                           ->required()
                           ->options([
-                              'pending' => 'pending',
-                              'shipped' => 'shipped',
-                              'delivered' => 'delivered',
-                              'cancelled' => 'cancelled',
+                              'pending' => __("general.pending"),
+                              'shipped' => __("general.shipped"),
+                              'delivered' => __("general.delivered"),
+                              'cancelled' => __("general.cancelled"),
                           ])->label(__(key: "general.status")),
         
                           Select::make('payment_method')
                           ->required()
                           ->options([
-                              'credit-card' => 'credit-card',
-                              'cash-on-delivery' => 'cash-on-delivery',
+                              'credit-card' => __(key: "general.credit_card"),
+                              'cash-on-delivery' =>__(key: "general.cash-on-delivery"),
                           ])->label(__(key: "general.payment_method")),
                                    
                           DatePicker::make('order_date')  
@@ -225,6 +228,7 @@ class OrderResource extends Resource
 
                   TextColumn::make('order_date')
                    ->searchable(isIndividual:true)
+                   ->jalaliDate()
                    ->label(__("general.order_date")),
 
                   TextColumn::make('total_amount')
@@ -235,18 +239,23 @@ class OrderResource extends Resource
                    ->searchable(isIndividual:true)
                    ->label(__("general.delivery_address")),
 
-                  TextColumn::make('copen')
+                  TextColumn::make('copen_code')
                    ->searchable(isIndividual:true)
                    ->label(__("general.copen")),
 
-                  TextColumn::make('copen_price')
+                  TextColumn::make('copen_reason')
                    ->searchable(isIndividual:true)
-                   ->label(__("general.copen_price")),
+                   ->label(__("general.copen_reason")),
+
+                  TextColumn::make('copens.code')
+                   ->searchable(isIndividual:true)
+                   ->label(__("general.copen_priced")),
 
                   TextColumn::make('final_price')
                    ->searchable(isIndividual:true)
                    ->label(__("general.final_price")),
 
+            
                   TextColumn::make('star')
                    ->searchable(isIndividual:true)
                    ->label(__("general.star")),
@@ -264,7 +273,17 @@ class OrderResource extends Resource
                    ->label(__("general.pay_status")),
             ])
             ->filters([
-                //
+                Filter::make('order_date')
+                ->form([
+                    Forms\Components\DatePicker::make('order_date')->jalali(),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['order_date'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('order_date',  $date),
+                        );         
+                })
             ])
             ->actions(actions: [
                 Tables\Actions\ViewAction::make()->button()->color('info'),
