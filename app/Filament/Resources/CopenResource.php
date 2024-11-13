@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -141,7 +143,28 @@ class CopenResource extends Resource
                     ->label(__('general.usage_limit')),
             ])
             ->filters([
-                //
+                SelectFilter::make(__('state'))
+                ->options([
+                    'unexpire' => __('general.unexpired'),
+                    'expired' => __('general.expired'),
+                ])->label(__('general.state')),
+
+                Filter::make('created_at')
+                ->form([
+                    Forms\Components\DatePicker::make('start_date')->jalali(),
+                    Forms\Components\DatePicker::make('end_date')->jalali(),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['start_date'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '>=', $date),
+                        )
+                        ->when(
+                            $data['end_date'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '<=', $date),
+                        );
+                })
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
