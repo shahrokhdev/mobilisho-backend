@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -92,17 +93,20 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label(__('general.name')),
-                TextColumn::make('family')->label(__('general.family')),
+                TextColumn::make('name')->label(__('general.name'))->searchable(isIndividual:true),
+                TextColumn::make('family')->label(__('general.family'))->searchable(isIndividual:true),
                 ImageColumn::make('image')->label(__('general.image')),
-                TextColumn::make('birth_date')->label(__('general.birth_date')),
-                TextColumn::make('mobile')->label(__('general.mobile')),
-                TextColumn::make('gender')->label(__('general.gender')),
-                TextColumn::make('created_at')->label(__('general.created_at')),
-               TextColumn::make('updated_at')->label(__('general.updated_at')),
+                TextColumn::make('birth_date')->label(__('general.birth_date'))->searchable(isIndividual:true)->jalaliDate(),
+                TextColumn::make('mobile')->label(__('general.mobile'))->searchable(isIndividual:true),
+                TextColumn::make('gender')->label(__('general.gender'))->searchable(isIndividual:true),
+                TextColumn::make('created_at')->label(__('general.created_at'))->searchable(isIndividual:true)->jalaliDate(),
             ])
             ->filters([
-                //
+                SelectFilter::make(__('gender'))
+                ->options([
+                    'male' => __('general.male'),
+                    'female' => __('general.female'),
+                ])->label(__('general.gender')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
