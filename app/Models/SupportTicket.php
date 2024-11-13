@@ -18,4 +18,8 @@ class SupportTicket extends Model
     public function messages() {
          return $this->hasMany(SupportMessage::class,"ticket_id");
     }
+
+    public function isAnswered() {
+        return $this->state == 'answered';
+     }
 }

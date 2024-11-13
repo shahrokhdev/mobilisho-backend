@@ -12,35 +12,22 @@ final class TicketMutation
     public function createTicket($root, array $args, GraphQLContext $context)
     {
         $user = auth()->loginUsingId(1);   
+        $file = $args['attached_file'];
+        $path = $file->storePublicly('public/uploads');
+
         $ticket = SupportTicket::create([
             'user_id' => $user->id, 
             'subject' => $args['subject'],
             'priority' => $args['priority'],
-            'attached_file' => $args['attached_file'],
-            'state' => $args['state'],
-            'completed_at' => $args['completed_at'],
+            'attached_file' => $path,
         ]);
 
-/*         $ticket->messages()->create([
+        $ticket->messages()->create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id, 
-            'content' => "new version"  
-        ]);
- */
-        return $ticket;
-    }
-    /* public function createMessage($root, array $args, GraphQLContext $context)
-    {
-        $user = auth()->loginUsingId(1);   
-        $ticket = SupportTicket::create([
-            'user_id' => $user->id, 
-            'subject' => $args['subject'],
-            'priority' => $args['priority'],
-            'attached_file' => $args['attached_file'],
-            'state' => $args['state'],
-            'completed_at' => $args['completed_at'],
+            'content' => $args['messages']  
         ]);
 
         return $ticket;
-    } */
+    }
 }

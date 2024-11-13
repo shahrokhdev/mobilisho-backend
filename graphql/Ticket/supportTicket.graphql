@@ -1,3 +1,6 @@
+scalar Upload
+    @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+
 type SupportTicket {
     id: ID!
     subject: String!
@@ -5,7 +8,7 @@ type SupportTicket {
     attached_file: String!
     state: String!
     completed_at: String!
-    user:User
+    user: User
     messages: [SupportMessage]
 }
 
@@ -14,8 +17,15 @@ extend type Query {
     findTicket(id: ID @eq): SupportTicket @find
 }
 
+extend type Mutation {
+    createTicket(
+        user_id: Int
+        subject: String!
+        priority: String!
+        attached_file: Upload!
+        messages: String
+    ): SupportTicket
+        @field(resolver: "App\\GraphQL\\Mutations\\TicketMutation@createTicket")
 
-
-extend type Mutation{
-  createTicket(user_id: Int  , subject:String! ,priority:String!,attached_file: String, state: String!, completed_at: String): SupportTicket @field(resolver: "App\\GraphQL\\Mutations\\TicketMutation@createTicket")
+    updateAttachedFile(attached_file: Upload!, id:ID!): SupportTicket
 }
