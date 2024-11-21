@@ -13,7 +13,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -123,22 +125,34 @@ class UserResource extends Resource
                     ->sortable()
                     ->label(__("general.state")),
 
+                    BadgeColumn::make('state')->searchable(isIndividual:true)
+                    ->getStateUsing(function (User $record){
+                         return $record->isActive() ? "active" :"inActive"; 
+                    })->colors([
+                       'success' => "active",
+                       'danger' => "inActive",
+                    ])->label(__('general.state')),  
+
                      TextColumn::make('created_at')
-                    ->dateTime()
+                    ->jalaliDate()
                     ->searchable(isIndividual:true)
                     ->sortable()
                     ->label(__("general.created_at")),
                   
 
                      TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->jalaliDate()
                     ->searchable(isIndividual:true)
                     ->sortable()
                     ->label(__("general.updated_at")),
 
             ])
             ->filters([
-                //
+                Filter::make('active_state')->label(__('general.is_active'))
+                ->query(fn (Builder $query): Builder => $query->where('state',   'active')),
+
+                Filter::make('inActive_state')->label(__('general.inActive'))
+                ->query(fn (Builder $query): Builder => $query->where('state',     'inActive')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),

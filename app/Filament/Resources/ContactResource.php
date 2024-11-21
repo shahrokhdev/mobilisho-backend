@@ -47,7 +47,15 @@ class ContactResource extends Resource
     public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::count() > 5 ? 'primary' : 'warning';
-    }public static function form(Form $form): Form
+    }
+
+    public static function canCreate(): bool
+    {
+        return false; 
+    }
+    
+    
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -77,11 +85,11 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('full_name')->label(__('general.full_name')),
-                TextColumn::make('title')->label(__('general.title')),
-                TextColumn::make('phone_number')->label(__('general.phone_number')),
-                TextColumn::make('message')->label(__('general.message'))->limit(20),
-                TextColumn::make('created_at')->label(__('general.created_at')),
+                TextColumn::make('full_name')->label(__('general.full_name'))->searchable(isIndividual:true),
+                TextColumn::make('title')->label(__('general.title'))->searchable(isIndividual:true),
+                TextColumn::make('phone_number')->label(__('general.phone_number'))->searchable(isIndividual:true),
+                TextColumn::make('message')->label(__('general.message'))->limit(20)->searchable(isIndividual:true),
+                TextColumn::make('created_at')->label(__('general.created_at'))->jalaliDate()->searchable(isIndividual:true),
             ])
             ->filters([
                 //

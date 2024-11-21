@@ -90,16 +90,16 @@ class CommentResource extends Resource
     {
         return $table
         ->columns([
-                 TextColumn::make('user.username')->label(__('general.username')),
-                 TextColumn::make('commentable.title')->label(__('general.comment-subject')),
-               BadgeColumn::make('status')
+                 TextColumn::make('user.username')->label(__('general.username'))->searchable(isIndividual:true),
+                 TextColumn::make('commentable.title')->label(__('general.comment-subject'))->searchable(isIndividual:true),
+               BadgeColumn::make('status')->searchable(isIndividual:true)
                ->getStateUsing(function (Comment $record){
                     return $record->isApproved() ? "approved" :"pending"; 
                })->colors([
                   'success' => "approved",
                   'danger' => "pending",
                ])->label(__('general.status')),  
-               TextColumn::make('created_at')->label(__('general.created_at')),
+               TextColumn::make('created_at')->label(__('general.created_at'))->jalaliDate()->searchable(isIndividual:true),
             ])
             ->filters([
                 SelectFilter::make(__('status'))
