@@ -15,3 +15,11 @@ extend type Query {
     findUser(id: ID @eq): User @find
 }
 
+extend type Mutation {
+    updateUser(
+        id: ID
+        email: String
+        phone_number: String
+        password: String @hash
+    ): User! @update
+}

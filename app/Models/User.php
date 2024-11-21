@@ -68,4 +68,8 @@ class User extends Authenticatable
     }
     
 
+    public function isActive() {
+        return $this->state == 'active';
+    }
+
 }

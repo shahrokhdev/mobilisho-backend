@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('status' , ['paid','pending','shipped','delivered','cancelled'])->default('pending');
             $table->string('total_amount');
             $table->enum('payment_method' , ['credit-card' , 'cash-on-delivery'])->default('credit-card');
-            $table->text('delivery_address');
+            $table->text('delivery_address')->nullable();
             $table->string('final_price');
             $table->string('copen_code')->nullable();
             $table->text('copen_reason')->nullable();

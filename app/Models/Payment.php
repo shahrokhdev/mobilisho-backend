@@ -5,19 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderDetails extends Model
+class Payment extends Model
 {
     use HasFactory;
+    protected $fillable = ['resnumber','status'];
 
 
-    
     public function order() {
         return $this->belongsTo(Order::class);
     }
-    public function products() {
-        return $this->belongsToMany(Product::class);
-    }
-
-
-
 }
