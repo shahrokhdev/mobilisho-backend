@@ -8,6 +8,7 @@ use App\Models\AttributeValue;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Product;
+use CodeWithDennis\FilamentPriceFilter\Filament\Tables\Filters\PriceFilter;
 use Filament\Forms;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
@@ -26,6 +27,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -91,7 +93,7 @@ class ProductResource extends Resource
                  ->numeric() 
                  ->live()
                  ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
-                    $dis_value = Discount::find($get("discount_id"))->discount_value;
+                    $dis_value = Discount::find($get("discount_id"))->discount_value??null;
                     $price_str = str_replace(",", "", $state);
                     $price = intval($price_str);
                     $discount_amount = ( $price * $dis_value) / 100 ;
@@ -137,12 +139,16 @@ class ProductResource extends Resource
                         ->afterStateHydrated( function (Component $component, $livewire, $context) {
                             if ($context !== "create")
                             {
+                    
                             $ar = [];
                             $attrs = $livewire->record->attributes->toArray();
+
                             foreach($attrs as $attr){
                                 $ar[] = [
                                     'attribute_id' => $attr['pivot']['attribute_id'] ,
-                                    'value_id' => $attr['pivot']['value_id']
+                                    'value_id' => $attr['pivot']['value_id'],
+                                    'quantity' => $attr['pivot']['quantity'],
+                                    'price' => $attr['pivot']['price']
                                 ];
                             }
                             $component->state($ar);
@@ -178,13 +184,21 @@ class ProductResource extends Resource
                                     $data['attribute_id'] = $get('attribute_id');
                                     return AttributeValue::create($data);
                                 })
-
                                  ->label(__('general.value'))
                                  ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
                                  ->live()
-                                 ->preload()
+                                 ->preload(),
+
+                                 TextInput::make('price')
+                                 ->mask(RawJs::make('$money($input)'))
+                                 ->stripCharacters(',')
+                                 ->numeric()
+                                 ->hidden(fn (Get $get): bool => ! $get('value_id'))->label(__('general.price')),  
+
+                                 TextInput::make('quantity')
+                                 ->hidden(fn (Get $get): bool => ! $get('value_id'))->label(__('general.quantity'))      
                         ])
-                        ->columns(2)
+                        ->columns(4)
                         ->label(__('general.attribute')),
                     ]),      
             ]);
@@ -215,18 +229,13 @@ class ProductResource extends Resource
                 TextColumn::make('created_at')->label(__('general.created_at'))->searchable(isIndividual:true)->jalaliDate(),
             ])
             ->filters([
-                Filter::make('created_at')->label(__('general.created_at'))
-                ->form([
-                    Forms\Components\DatePicker::make('created_at')->jalali(),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['created_at'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at',  $date),
-                        );         
-                })
-            ])
+                Filter::make('discount')->label(__('general.has_discount'))
+                ->query(fn (Builder $query): Builder => $query->where('dis_price', '!=', null)),
+
+                PriceFilter::make('price')
+                ->min(100)
+                ->max(1000)
+             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button(),

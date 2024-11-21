@@ -15,13 +15,8 @@ class EditProduct extends EditRecord
 
     public function mutateFormDataBeforeSave($data): array
     {
-
-
-
         $this->formData = $data;
-
         return $data;
-
     }
 
 
@@ -32,10 +27,16 @@ class EditProduct extends EditRecord
 
         $product = static::getModel()::find($storedDataId);
 
-
-        $product->attributes()->sync($this->formData['properties']);
-
-
+        $attachData = []; 
+        foreach ($this->formData['properties'] as $attribute) 
+        {
+             $attachData[] = [ 'product_id' => $storedDataId, 'attribute_id' => $attribute['attribute_id'], 'value_id' => $attribute['value_id'], 'quantity' => $attribute['quantity'] ?? null,'price' => $attribute['price'] ?? null, ]; 
+        } 
+            $product->attributes()->detach(); // Attach new attributes
+             foreach ($attachData as $data)
+              { 
+                $product->attributes()->attach([$data['attribute_id'] => [ 'value_id' => $data['value_id'], 'quantity' => $data['quantity'] , 'price' => $data['price'] ]]); 
+              }
     }
     protected function getHeaderActions(): array
     {
