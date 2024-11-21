@@ -15,3 +15,4 @@
 #import ./Product/Discount/discount.graphql
 #import ./Customer/customer.graphql
 #import ./Order/order.graphql
+#import ./Payment/payment.graphql

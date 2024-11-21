@@ -1,0 +1,32 @@
+type Payment {
+    id: ID!
+    customer_id: String
+    cartData: [String!]!
+    quantity: String
+    copen_code: String
+}
+
+extend type Mutation {
+    payment(
+        id: ID
+        cartData: [CartData]
+        quantity: String
+        copen_code: String
+    ): String @field(resolver: "App\\GraphQL\\Mutations\\Payment@payment")
+}
+
+input CartData {
+    id: String!
+    title: String
+    slug: String
+    description: String
+    price: String
+    inventory: String
+    attributes: [attributes]
+    dis_price: String
+    quantity: String
+}
+
+input attributes {
+    name: String
+}
