@@ -56,11 +56,9 @@ final class Payment
                    throw new \Exception("Product with ID {$item['id']}does not have sufficient stock."); 
                } 
 
-
-               return $item['attributes'];
                foreach ($item['attributes'] as $attributeName => $attributeValue) 
                {
-                return $attributeName;
+                 return $attributeName;
                  $attribute = Attribute::where('name', $attributeName)->first(); 
                  if (!$attribute) 
                  { 

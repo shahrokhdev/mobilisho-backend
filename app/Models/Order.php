@@ -29,6 +29,30 @@ class Order extends Model
     }
 
     
+
+    public function isState($state) {
+         switch($state)
+         {
+             case 'paid' : 
+            return $state = 'paid';
+             case 'pending' : 
+                return $state = 'pending';
+
+                case 'delivered' : 
+                    return $state = 'delivered';
+    
+                    case 'shipped' : 
+                        return $state = 'shipped';
+        
+                    case 'cancelled' : 
+                        return $state = 'cancelled';
+        
+                        default : 
+                        return "not found" ;
+                         
+
+         }
+    }
   
 
 }
