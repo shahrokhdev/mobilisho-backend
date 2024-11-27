@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'product-chart' => "نمودار محصولات",
+    'order-chart' => "نمودار سفارشات",
     'articles' => 'مقالات',
     'users' => 'کاربران',
     'categories' => 'دسته بندی محصولات',
@@ -47,6 +49,7 @@ return [
     'comment' => 'نظر',
     'admin-reply' => 'پاسخ ادمین',
     "pending" => "در انتظار تایید",
+    'paid' => 'پرداخت شده' ,
     'shipped' => "حمل شده",
     'delivered' => "تحویل داده شده",
     'cancelled' => "کنسل شده",
@@ -106,5 +109,7 @@ return [
     "show_by"=>"نمایش بر اساس",
     "has_discount" => "تخفیف دار",
     'is_active' => "کاربران فعال" ,
-    'inActive' => "کاربران غیر فعال" 
+    'inActive' => "کاربران غیر فعال",
+    'last-order' => "آخرین سفارشات",
+    'is-exist'=> 'موجود است'
 ];

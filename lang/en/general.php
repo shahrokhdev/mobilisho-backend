@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'product-chart' => "Product Chart",
+    'order-chart' => "Order Chart",
     'articles' => 'Articles',
     'users' => 'Users',
     'categories' => 'Categories',
@@ -49,6 +51,7 @@ return [
     'created' => 'created',
     'comment' => 'comment',
     "pending" => "pending",
+    'paid' => 'paid' ,
     'shipped' => "shipped",
     'delivered' => "delivered",
     'cancelled' => "cancelled",
@@ -107,5 +110,7 @@ return [
     "show_by"=>"show_by",
      "has_discount" => "has discount",
      'is_active' => "active users" ,
-     'inActive' => "inActive users" 
+     'inActive' => "inActive users" ,
+     'last-order' => "Last Order",
+     'is-exist'=> 'is exist'
 ];
