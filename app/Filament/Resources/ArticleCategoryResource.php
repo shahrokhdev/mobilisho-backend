@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ArticleCategoryResource\Pages;
 use App\Filament\Resources\ArticleCategoryResource\RelationManagers;
 use App\Models\ArticleCategory;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -29,8 +30,6 @@ class ArticleCategoryResource extends Resource
     {
         return __(key: 'general.article_categories');
     }
-
-
 
     public static function getNavigationLabel(): string
     {
