@@ -111,5 +111,15 @@ return [
     'is_active' => "کاربران فعال" ,
     'inActive' => "کاربران غیر فعال",
     'last-order' => "آخرین سفارشات",
-    'is-exist'=> 'موجود است'
+    'is-exist'=> 'موجود است',
+    'settings' => "تنظیمات",
+    'create-article-category' => "ایجاد دسته بندی مقاله",
+    'create-article' => "ایجاد مقاله",
+    'create-category' => "ایجاد دسته بندی",
+    'create-product' => "ایجاد محصول",
+    'create-order' => "ایجاد سفارش",
+    'create-customer' => "ایجاد مشتری",
+    'create-user' => "ایجاد کاربر",
+    'create-discount' => "ایجاد تخفیف برای محصول",
+    'create-copen' => "ایجاد کد تخفیف",
 ];
