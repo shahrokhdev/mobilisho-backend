@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\CustomerExporter;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\Customer;
@@ -17,16 +18,15 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    
+    protected static ?int $navigationSort = 3;
     public static function getpluralModelLabel(): string
     {
         return __(key: 'general.customers');
@@ -113,9 +113,14 @@ class CustomerResource extends Resource
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(CustomerExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exporter(CustomerExporter::class)
                 ]),
             ]);
     }

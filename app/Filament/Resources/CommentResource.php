@@ -24,16 +24,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\HtmlString;
 use App\Filament\Exports\CommentExporter;
-use Filament\Actions\ExportAction;
 use Filament\Forms\Components\Hidden;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
-use Filament\Pages\Actions\Modal\Actions\ButtonAction;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction as ActionsExportBulkAction;
+
 
 class CommentResource extends Resource
 {
@@ -181,9 +178,14 @@ class CommentResource extends Resource
                 Tables\Actions\DeleteAction::make()->button(),
              
             ])
+            ->headerActions([
+                 ExportAction::make()
+                    ->exporter(CommentExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ActionsExportBulkAction::make()->exporter(CommentExporter::class)
                 ]),
             ]);
     }

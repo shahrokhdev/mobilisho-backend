@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables\Actions\ExportAction; 
+use App\Filament\Exports\ProductExporter;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\AttributeValue;
@@ -24,6 +26,7 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -38,6 +41,7 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?int $navigationSort = 2;
 
     public static function getpluralModelLabel(): string
     {
@@ -53,6 +57,7 @@ class ProductResource extends Resource
     {
         return __(key: 'general.product-management');
     }
+
 
     public static function getNavigationBadge(): ?string
     {
@@ -241,10 +246,16 @@ class ProductResource extends Resource
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(ProductExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exporter(ProductExporter::class)
                 ]),
+              
             ]);
     }
     

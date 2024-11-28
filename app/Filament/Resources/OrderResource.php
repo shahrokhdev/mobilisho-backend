@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\OrderExporter;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Copen;
@@ -30,6 +31,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 
 class OrderResource extends Resource
 {
@@ -37,6 +40,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
+    protected static ?int $navigationSort = 6;
     public static function getpluralModelLabel(): string
     {
         return __(key: 'general.orders');
@@ -290,9 +294,14 @@ class OrderResource extends Resource
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(OrderExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exporter(OrderExporter::class)
                 ]),
             ]);
     }

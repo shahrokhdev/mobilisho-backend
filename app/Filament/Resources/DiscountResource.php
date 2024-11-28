@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\DiscountExporter;
 use App\Filament\Resources\DiscountResource\Pages;
 use App\Filament\Resources\DiscountResource\RelationManagers;
 use App\Models\Discount;
@@ -13,6 +14,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -26,7 +29,7 @@ class DiscountResource extends Resource
     protected static ?string $model = Discount::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
-
+    protected static ?int $navigationSort = 5;
     public static function getpluralModelLabel(): string
     {
         return __(key: 'general.discounts');
@@ -146,9 +149,14 @@ class DiscountResource extends Resource
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(DiscountExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exporter(DiscountExporter::class)
                 ]),
             ]);
     }

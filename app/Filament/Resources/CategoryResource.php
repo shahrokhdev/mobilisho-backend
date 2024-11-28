@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\CategoryExporter;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use App\Models\Comment;
+
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -109,9 +113,14 @@ class CategoryResource extends Resource
                 Tables\Actions\EditAction::make()->button()->color('warning'),
                 Tables\Actions\DeleteAction::make()->button(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(CategoryExporter::class)
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exporter(CategoryExporter::class)
                 ]),
             ]);
     }
