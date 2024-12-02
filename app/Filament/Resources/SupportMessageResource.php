@@ -5,10 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SupportMessageResource\Pages;
 use App\Filament\Resources\SupportMessageResource\RelationManagers;
 use App\Models\SupportMessage;
+use App\Models\SupportTicket;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -23,7 +27,7 @@ class SupportMessageResource extends Resource
     protected static ?string $model = SupportMessage::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-view-columns';
-
+    protected static ?int $navigationSort = 3;
     public static function getpluralModelLabel(): string
     {
         return __(key: 'general.support_messages');
@@ -72,6 +76,8 @@ class SupportMessageResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('user.id')->label(__('general.user_id')),   
+                TextColumn::make('ticket.id')->label(__('general.ticket_id')),   
                 TextColumn::make('user.username')->label(__('general.username')),   
                 TextColumn::make('ticket.subject')->label(__('general.subject')),
                 TextColumn::make('content')->limit(30)->label(__('general.content')),
@@ -80,6 +86,28 @@ class SupportMessageResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('reply')
+                ->form([
+                    Hidden::make('ticket_id')->default(fn(SupportMessage $record)=> $record->ticket->id),
+                    Hidden::make('user_id')->default(fn(SupportMessage $record)=> $record->user->id),
+                    TextInput::make('subject')->default(fn(SupportMessage $record)=> $record->ticket->subject)->required(),
+                    TextInput::make('content')->required(),
+                ])
+                  ->action(function ($data) {
+                      $message = new SupportMessage();
+                       $message->create([
+                          'user_id' => auth()->user()->id ,
+                          'ticket_id' => $data['ticket_id'] ,
+                          'content' => $data['content'] ,
+                       ]);
+                       Notification::make()
+                       ->title(__("general.created"))
+                       ->success()
+                       ->send();
+                 }) 
+                 ->button()
+                 ->color('warning')
+                 ->label(__("general.reply")),
                 Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->button(),
