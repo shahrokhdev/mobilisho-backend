@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->default(0);
             $table->string('subject');
             $table->enum('priority' , ['low' , 'medium' , 'high', 'important'])->default('medium');
-            $table->string('attached_file')->nullable();
-            $table->enum('state' , ['rejected' , 'pending' , 'answered'])->default('pending');
+            $table->enum('state' , ['rejected' , 'pending' , 'in_progress','answered','closed','reopened'])->default('pending');
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });

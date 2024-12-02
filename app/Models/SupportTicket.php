@@ -22,4 +22,36 @@ class SupportTicket extends Model
     public function isAnswered() {
         return $this->state == 'answered';
      }
+
+    public function isComplete() {
+        return $this->completed_at == now();
+     }
+
+     public function isState($state) {
+          switch($state)
+          {
+              case 'rejected' : 
+             return $state = 'rejected';
+
+              case 'pending' : 
+                 return $state = 'pending';             
+ 
+                 case 'in_progress' : 
+                     return $state = 'in_progress';
+     
+                     case 'answered' : 
+                         return $state = 'answered';
+         
+                     case 'closed' : 
+                         return $state = 'closed';
+
+                     case 'reopened' : 
+                         return $state = 'reopened';
+         
+                         default : 
+                         return "not found" ;
+                          
+ 
+          }
+     }
 }

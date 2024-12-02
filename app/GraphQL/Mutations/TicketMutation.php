@@ -19,13 +19,14 @@ final class TicketMutation
             'user_id' => $user->id, 
             'subject' => $args['subject'],
             'priority' => $args['priority'],
-            'attached_file' => $path,
+
         ]);
 
         $ticket->messages()->create([
             'ticket_id' => $ticket->id,
             'user_id' => $user->id, 
-            'content' => $args['messages']  
+            'content' => $args['messages'],
+            'attached_file' => $path,
         ]);
 
         return $ticket;

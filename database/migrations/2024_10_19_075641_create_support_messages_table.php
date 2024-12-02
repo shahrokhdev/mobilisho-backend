@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('support_messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger(column: 'user_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('ticket_id');
             $table->longText('content');
+            $table->text('attached_file')->nullable();
             $table->timestamps();
         });
     }
