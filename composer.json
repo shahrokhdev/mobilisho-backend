@@ -10,7 +10,9 @@
         "aymanalhattami/filament-page-with-sidebar": "^2.5",
         "bezhansalleh/filament-language-switch": "^3.1",
         "codewithdennis/filament-price-filter": "^0.0.4",
+        "datlechin/filament-menu-builder": "^0.6.0",
         "filament/filament": "^3.1",
+        "filament/forms": "^3.1",
         "flowframe/laravel-trend": "^0.3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
@@ -21,7 +23,8 @@
         "morilog/jalali": "^3.4",
         "nuwave/lighthouse": "^6.44",
         "orangehill/iseed": "^3.0",
-        "pishran/laravel-persian-slug": "^2.2"
+        "pishran/laravel-persian-slug": "^2.2",
+        "pxlrbt/filament-excel": "^2.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

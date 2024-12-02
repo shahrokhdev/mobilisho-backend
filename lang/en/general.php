@@ -126,4 +126,10 @@ return [
      'create-user' => "Create User",
      'create-discount' => "Create Discount",
      'create-copen' => "Create Copen",
+     'completed_at' => "completed_at",
+     'complete' => "complete",
+     'subject' => "subject",
+     'in_progress' => "in_progress",
+     'closed' => "closed",
+     'reopened' => "reopened",
 ];

@@ -122,4 +122,10 @@ return [
     'create-user' => "ایجاد کاربر",
     'create-discount' => "ایجاد تخفیف برای محصول",
     'create-copen' => "ایجاد کد تخفیف",
+    'completed_at' => "خاتمه در",
+    'complete' => "بستن تیکت",
+    'subject' => "موضوع",
+    'in_progress' => "در جریان",
+    'closed' => "بسته شده",
+    'reopened' => "بازگشایی",
 ];

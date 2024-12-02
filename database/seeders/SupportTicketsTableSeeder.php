@@ -25,8 +25,7 @@ class SupportTicketsTableSeeder extends Seeder
                 'user_id' => 2,
                 'subject' => 'مشکل در ثبت نام',
                 'priority' => 'medium',
-                'attached_file' => 'تست',
-                'state' => 'pending',
+
                 'completed_at' => NULL,
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -37,8 +36,7 @@ class SupportTicketsTableSeeder extends Seeder
                 'user_id' => 1,
                 'subject' => 'مشکل در تست',
                 'priority' => 'medium',
-                'attached_file' => NULL,
-                'state' => 'pending',
+
                 'completed_at' => NULL,
                 'created_at' => '2024-10-21 09:16:10',
                 'updated_at' => '2024-10-21 09:16:10',
