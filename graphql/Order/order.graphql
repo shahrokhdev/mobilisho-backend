@@ -6,13 +6,28 @@ type Order {
     payment_method: String!
     pay_status: String!
     delivery_address: String!
-    copen: String!
-    copen_price: String!
+    copen_code: String!
+    copen_reason: String!
     final_price: String!
     star: String!
 }
 
 extend type Query {
-    orders : [Order!]! @all
+    orders: [Order!]! @all
     findOrder(id: ID @eq): Order @find
+}
+
+extend type Mutation {
+    createOrder(
+        order_date: String
+        status: String
+        total_amount: String
+        payment_method: String
+        pay_status: String
+        delivery_address: String
+        copen_code: String
+        copen_reason: String
+        final_price: String
+        star: String
+    ): Order
 }
