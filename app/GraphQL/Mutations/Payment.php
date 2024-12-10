@@ -31,7 +31,7 @@ final class Payment
 
          foreach ($cartData as $item) {
              $product = Product::find($item['id']);
-             $order = Order::create(['order_date' => now() , 'customer_id' => 2, 'total_amount' => $totalPrice , 'final_price' => $finalPrice , 'status' => "pending"]);
+             $order = Order::create(['order_date' => now() , 'customer_id' => 2, 'total_amount' => $totalPrice , 'final_price' => $finalPrice]);
 
                    $order->products()->attach($item['id'],
                     [ 
@@ -56,7 +56,7 @@ final class Payment
                    throw new \Exception("Product with ID {$item['id']}does not have sufficient stock."); 
                } 
 
-               foreach ($item['attributes'] as $attributeName => $attributeValue) 
+               /* foreach ($item['attributes'] as $attributeName => $attributeValue) 
                {
                  return $attributeName;
                  $attribute = Attribute::where('name', $attributeName)->first(); 
@@ -67,7 +67,7 @@ final class Payment
                   $productAttribute = $product->attributes() ->where('attribute_id', $attribute->id)->wherePivot('value', $attributeValue)->first(); 
                   if (!$productAttribute) { throw new \Exception("Invalid attribute value for {$attributeName}.");
                    } 
-                }
+                } */
 
                  $price = $product->dis_price ?? $product->price;
            
@@ -111,7 +111,6 @@ final class Payment
                 if ($item->where('copen_code', $code->code ??null)
                 ->where('customer_id' , $customer->id)->count() >= 1) {
                     // copen code is already used
-
                     $order->update([
                         "copen_code" => null ,
                         "copen_reason" =>  null,
