@@ -12,8 +12,9 @@ class Attribute extends Model
     use HasFactory;
 
 
-    public function products() {
-         return $this->belongsToMany(Product::class)->withPivot(['value_id']);
+    public function products() 
+    { 
+        return $this->belongsToMany(Product::class, 'attribute_product')->withPivot('value_id', 'quantity', 'price');
     }
 
     public function values() {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('attribute_id');
             $table->unsignedBigInteger('value_id')->nullable()->default(0);
             $table->string('quantity')->nullable();
-            $table->string('price')->nullable();
+            $table->string('unit_price')->nullable();
             $table->unique(['product_id', 'attribute_id', 'value_id'], 'unique_product_attribute_value');
             $table->timestamps();
         });

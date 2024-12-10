@@ -1,11 +1,24 @@
 type Attribute {
     id: ID!
     name: String!
-    values: [AttributeValue!]
-    products: [Product!]
+    values: [AttributeValue!]! @hasMany
+    products: [Product!] @belongsToMany(relation: "attributeValues")
+    pivot: Pivot
 }
 
 extend type Query {
     attributes: [Attribute!]! @all
     findAttribute(id: ID @eq): Attribute @find
+}
+
+type Pivot {
+    product_id: Int
+    attribute_id: Int
+    value_id: Int
+    value_name: String
+        @field(
+            resolver: "App\\GraphQL\\Queries\\PivotResolver@resolveValueName"
+        )
+    quantity: String
+    unit_price: String
 }

@@ -6,6 +6,7 @@ type Category {
     image: String!
     keyword: String
     child: [Category!]
+    products:[Product!]!
 }
 
 

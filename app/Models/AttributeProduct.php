@@ -13,6 +13,7 @@ class AttributeProduct extends Model
         'product_id',
         'attribute_id',
         'value_id',
+        'unit_price',
         'quantity',
     ];
 }
