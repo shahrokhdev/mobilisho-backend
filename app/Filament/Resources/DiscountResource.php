@@ -4,9 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Exports\DiscountExporter;
 use App\Filament\Resources\DiscountResource\Pages;
-use App\Filament\Resources\DiscountResource\RelationManagers;
 use App\Models\Discount;
-use Filament\Actions\Modal\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -22,7 +20,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class DiscountResource extends Resource
 {
@@ -58,33 +56,32 @@ class DiscountResource extends Resource
     {
         return $form
             ->schema([
-                
-                 Select::make('discount_type')
-                  ->options([
-                      'percent' => 'percent',
-                      'price' => 'price',
-                  ])->label(__(key: "general.state")),
+
+                Select::make('discount_type')
+                    ->options([
+                        'percent' => 'percent',
+                        'price' => 'price',
+                    ])->label(__(key: "general.state")),
 
 
-                  TextInput::make('discount_value')->
-                  required()
-                  ->label(__('general.discount_value')),
-                  
-                  Select::make('state')
-                  ->options([
-                      'unexpire' => __("general.unexpired"),
-                      'expired' =>__("general.expired")
-                  ])->label(__(key: "general.state")),
+                TextInput::make('discount_value')->required()
+                    ->label(__('general.discount_value')),
 
-                  DatePicker::make('start_date')
-                  ->required()
-                  ->jalali()
-                   ->label(__("general.start_date")),   
-                   
-                   DatePicker::make('end_date')
-                   ->required()
-                   ->jalali()
-                    ->label(__("general.end_date")),   
+                Select::make('state')
+                    ->options([
+                        'unexpire' => __("general.unexpired"),
+                        'expired' => __("general.expired")
+                    ])->label(__(key: "general.state")),
+
+                DatePicker::make('start_date')
+                    ->required()
+                    ->jalali()
+                    ->label(__("general.start_date")),
+
+                DatePicker::make('end_date')
+                    ->required()
+                    ->jalali()
+                    ->label(__("general.end_date")),
 
             ]);
     }
@@ -94,55 +91,55 @@ class DiscountResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('discount_type')
-                 ->searchable(isIndividual:true)
-                  ->label(__('general.discount_type')),
+                    ->searchable(isIndividual: true)
+                    ->label(__('general.discount_type')),
 
                 TextColumn::make(name: 'discount_value')
-                 ->searchable(isIndividual:true)
-                  ->label(__('general.discount_value')),
+                    ->searchable(isIndividual: true)
+                    ->label(__('general.discount_value')),
 
-                  BadgeColumn::make('state')
-                  ->getStateUsing(function (Discount $record){
-                       return $record->isExpired() ? "unexpire" :"expired"; 
-                  })->colors([
-                     'success' => "unexpire",
-                     'danger' => 'expired',
-                  ])->searchable(isIndividual:true)
-                  ->label(__('general.status')),  
-                  
+                BadgeColumn::make('state')
+                    ->getStateUsing(function (Discount $record) {
+                        return $record->isExpired() ? "unexpire" : "expired";
+                    })->colors([
+                        'success' => "unexpire",
+                        'danger' => 'expired',
+                    ])->searchable(isIndividual: true)
+                    ->label(__('general.status')),
+
                 TextColumn::make('start_date')
-                 ->searchable(isIndividual:true)
-                 ->jalaliDate()
-                  ->label(__('general.start_date')),
+                    ->searchable(isIndividual: true)
+                    ->jalaliDate()
+                    ->label(__('general.start_date')),
 
                 TextColumn::make('end_date')
-                 ->searchable(isIndividual:true)
-                 ->jalaliDate()
-                  ->label(__('general.end_date')),
+                    ->searchable(isIndividual: true)
+                    ->jalaliDate()
+                    ->label(__('general.end_date')),
             ])
             ->filters([
-                  SelectFilter::make(__('state'))
-                ->options([
-                    'unexpire' => __('general.unexpired'),
-                    'expired' => __('general.expired'),
-                ])->label(__('general.state')),
+                SelectFilter::make(__('state'))
+                    ->options([
+                        'unexpire' => __('general.unexpired'),
+                        'expired' => __('general.expired'),
+                    ])->label(__('general.state')),
 
                 Filter::make('created_at')
-                ->form([
-                    Forms\Components\DatePicker::make('start_date')->jalali(),
-                    Forms\Components\DatePicker::make('end_date')->jalali(),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['start_date'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('start_date', '>=', $date),
-                        )
-                        ->when(
-                            $data['end_date'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('end_date', '<=', $date),
-                        );
-                })
+                    ->form([
+                        Forms\Components\DatePicker::make('start_date')->jalali(),
+                        Forms\Components\DatePicker::make('end_date')->jalali(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['start_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('start_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['end_date'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('end_date', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),

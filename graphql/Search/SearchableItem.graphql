@@ -6,8 +6,6 @@ type SearchableItem {
     description: String
 }
 
-
-
 extend type Query {
     search(keyword: String!): [SearchableItem!]!
 }

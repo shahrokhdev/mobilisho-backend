@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->unsignedBigInteger('attribute_id')->default(1); 
+            $table->unsignedBigInteger('attribute_id')->default(1);
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
             $table->unsignedBigInteger('value_id')->default(1);
             $table->foreign('value_id')->references('id')->on('attribute_values')->onDelete('cascade');

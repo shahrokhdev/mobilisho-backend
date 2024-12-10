@@ -10,7 +10,8 @@ class CreateContact extends CreateRecord
 {
     protected static string $resource = ContactResource::class;
 
-    public function getRedirectUrl(): string { 
+    public function getRedirectUrl(): string
+    {
         return $this->getResource()::getURl('index');
-     }
+    }
 }

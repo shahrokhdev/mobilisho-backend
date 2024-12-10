@@ -10,7 +10,8 @@ class CreateArticle extends CreateRecord
 {
     protected static string $resource = ArticleResource::class;
 
-    public function getRedirectUrl(): string { 
+    public function getRedirectUrl(): string
+    {
         return $this->getResource()::getURl('index');
-     }
+    }
 }

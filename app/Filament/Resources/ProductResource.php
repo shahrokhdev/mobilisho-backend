@@ -2,20 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Tables\Actions\ExportAction; 
+use Filament\Tables\Actions\ExportAction;
 use App\Filament\Exports\ProductExporter;
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\AttributeValue;
-use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Product;
 use CodeWithDennis\FilamentPriceFilter\Filament\Tables\Filters\PriceFilter;
-use Filament\Forms;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -30,11 +26,10 @@ use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Http\Request;
+
+
 
 class ProductResource extends Resource
 {
@@ -72,140 +67,138 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([  
-                 Select::make('category_id')
-                ->relationship(name:'categories' , titleAttribute:'name')
-                ->multiple()
-                ->preload()
-                 ->label(__("general.categoryName")),       
+            ->schema([
+                Select::make('category_id')
+                    ->relationship(name: 'categories', titleAttribute: 'name')
+                    ->multiple()
+                    ->preload()
+                    ->label(__("general.categoryName")),
 
                 TextInput::make('title')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.title")),       
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.title")),
 
-                 Textarea::make('description')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.description")),      
-                 
+                Textarea::make('description')
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.description")),
+
                 TextInput::make('price')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.price"))
-                  ->mask(RawJs::make('$money($input)'))
-                 ->stripCharacters(',')                
-                 ->numeric() 
-                 ->live()
-                 ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
-                    $dis_value = Discount::find($get("discount_id"))->discount_value??null;
-                    $price_str = str_replace(",", "", $state);
-                    $price = intval($price_str);
-                    $discount_amount = ( $price * $dis_value) / 100 ;
-                    $final_price = $price - $discount_amount ;
-                    $set('dis_price' , $final_price);        
-                }),     
-
-                 Select::make('discount_id')
-                 ->options(function(Discount $discount) {
-                     return $discount->where('state','unexpire')->pluck('discount_value','id');
-                 })
-                 ->preload()
-                 ->live()
-                 ->afterStateUpdated(function ($state ,$component , Get $get , Set $set) {
-                    $dis_value = Discount::find($state)->discount_value;
-                    $price_str = str_replace(",", "", $get("price"));
-                    $price = intval($price_str);
-                    $discount_amount = ( $price * $dis_value) / 100 ;
-                    $final_price = $price - $discount_amount ;
-                    $set('dis_price' , $final_price);        
-                })
-                  ->label(__("general.discount_percent")),   
-
-                  TextInput::make('dis_price')
-                  ->readOnly()
-                   ->label(__("general.dis_price"))
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.price"))
                     ->mask(RawJs::make('$money($input)'))
-                   ->stripCharacters(',')
-                   ->numeric(),
-                  
-                 FileUpload::make('image')
-                ->required()
-                 ->label(__("general.image")),     
+                    ->stripCharacters(',')
+                    ->numeric()
+                    ->live()
+                    ->afterStateUpdated(function ($state, $component, Get $get, Set $set) {
+                        $dis_value = Discount::find($get("discount_id"))->discount_value ?? null;
+                        $price_str = str_replace(",", "", $state);
+                        $price = intval($price_str);
+                        $discount_amount = ($price * $dis_value) / 100;
+                        $final_price = $price - $discount_amount;
+                        $set('dis_price', $final_price);
+                    }),
+
+                Select::make('discount_id')
+                    ->options(function (Discount $discount) {
+                        return $discount->where('state', 'unexpire')->pluck('discount_value', 'id');
+                    })
+                    ->preload()
+                    ->live()
+                    ->afterStateUpdated(function ($state, $component, Get $get, Set $set) {
+                        $dis_value = Discount::find($state)->discount_value;
+                        $price_str = str_replace(",", "", $get("price"));
+                        $price = intval($price_str);
+                        $discount_amount = ($price * $dis_value) / 100;
+                        $final_price = $price - $discount_amount;
+                        $set('dis_price', $final_price);
+                    })
+                    ->label(__("general.discount_percent")),
+
+                TextInput::make('dis_price')
+                    ->readOnly()
+                    ->label(__("general.dis_price"))
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->numeric(),
+
+                FileUpload::make('image')
+                    ->required()
+                    ->label(__("general.image")),
 
                 TextInput::make('inventory')
-                ->required()
-                ->maxLength(255)
-                ->rules('numeric')
-                 ->label(__("general.inventory")),          
-                   Grid::make(1)
+                    ->required()
+                    ->maxLength(255)
+                    ->rules('numeric')
+                    ->label(__("general.inventory")),
+                Grid::make(1)
                     ->schema([
                         Repeater::make('properties')
-                        ->afterStateHydrated( function (Component $component, $livewire, $context) {
-                            if ($context !== "create")
-                            {
-                    
-                            $ar = [];
-                            $attrs = $livewire->record->attributes->toArray();
+                            ->afterStateHydrated(function (Component $component, $livewire, $context) {
+                                if ($context !== "create") {
+                                    $ar = [];
+                                    $attrs = $livewire->record->attributes->toArray();
 
-                            foreach($attrs as $attr){
-                                $ar[] = [
-                                    'attribute_id' => $attr['pivot']['attribute_id'] ,
-                                    'value_id' => $attr['pivot']['value_id'],
-                                    'quantity' => $attr['pivot']['quantity'],
-                                    'price' => $attr['pivot']['price']
-                                ];
-                            }
-                            $component->state($ar);
-                        }
-                        })
-                        ->schema([
-                            Select::make('attribute_id')
-                                ->relationship('attributes', 'name')
-                                ->createOptionForm([
-                                     TextInput::make('name')
-                                        ->required()
-                                        ->unique()
-                                        ->label(__('general.name')),
-                                ])
-                                ->live()
-                                ->preload()
-                                ->label(__('general.attribute')),
-                    
+                                    foreach ($attrs as $attr) {
+                                        $ar[] = [
+                                            'attribute_id' => $attr['pivot']['attribute_id'],
+                                            'value_id' => $attr['pivot']['value_id'],
+                                            'quantity' => $attr['pivot']['quantity'],
+                                            'unit_price' => $attr['pivot']['unit_price']
+                                        ];
+                                    }
+                                    $component->state($ar);
+                                }
+                            })
+                            ->schema([
+                                Select::make('attribute_id')
+                                    ->relationship('attributes', 'name')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required()
+                                            ->unique()
+                                            ->label(__('general.name')),
+                                    ])
+                                    ->live()
+                                    ->preload()
+                                    ->label(__('general.attribute')),
+
                                 Select::make('value_id')
-                                ->options(function (Get $get) {
-                                    return AttributeValue::query()
-                                        ->where('attribute_id', $get('attribute_id'))
-                                        ->pluck('value', 'id');
-                                })
-                                ->createOptionForm(function (Get $get) {
-                                    return [
-                                        TextInput::make('value')
-                                        ->required()
-                                        ->label(__('general.value'))
-                                    ];
-                                })
-                                ->createOptionUsing(function (array $data,Get $get) {
-                                    $data['attribute_id'] = $get('attribute_id');
-                                    return AttributeValue::create($data);
-                                })
-                                 ->label(__('general.value'))
-                                 ->hidden(fn (Get $get): bool => ! $get('attribute_id'))
-                                 ->live()
-                                 ->preload(),
+                                    ->options(function (Get $get) {
+                                        return AttributeValue::query()
+                                            ->where('attribute_id', $get('attribute_id'))
+                                            ->pluck('value', 'id');
+                                    })
+                                    ->createOptionForm(function (Get $get) {
+                                        return [
+                                            TextInput::make('value')
+                                                ->required()
+                                                ->label(__('general.value'))
+                                        ];
+                                    })
+                                    ->createOptionUsing(function (array $data, Get $get) {
+                                        $data['attribute_id'] = $get('attribute_id');
+                                        return AttributeValue::create($data);
+                                    })
+                                    ->label(__('general.value'))
+                                    ->hidden(fn(Get $get): bool => ! $get('attribute_id'))
+                                    ->live()
+                                    ->preload(),
 
-                                 TextInput::make('price')
-                                 ->mask(RawJs::make('$money($input)'))
-                                 ->stripCharacters(',')
-                                 ->numeric()
-                                 ->hidden(fn (Get $get): bool => ! $get('value_id'))->label(__('general.price')),  
+                                TextInput::make('unit_price')
+                                    ->mask(RawJs::make(js: '$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->numeric()
+                                    ->hidden(fn(Get $get): bool => ! $get('value_id'))->label(__('general.unit_price')),
 
-                                 TextInput::make('quantity')
-                                 ->hidden(fn (Get $get): bool => ! $get('value_id'))->label(__('general.quantity'))      
-                        ])
-                        ->columns(4)
-                        ->label(__('general.attribute')),
-                    ]),      
+                                TextInput::make('quantity')
+                                    ->hidden(fn(Get $get): bool => ! $get('value_id'))->label(__('general.quantity'))
+                            ])
+                            ->columns(4)
+                            ->label(__('general.attribute')),
+                    ]),
             ]);
     }
 
@@ -213,34 +206,34 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label(__('general.name'))->searchable(isIndividual:true),
+                TextColumn::make('title')->label(__('general.name'))->searchable(isIndividual: true),
 
-                TextColumn::make('description')->tooltip(fn (Product $record): string => $record->description)->limit(30)->label(__('general.description'))->searchable(isIndividual:true),
+                TextColumn::make('description')->tooltip(fn(Product $record): string => $record->description)->limit(30)->label(__('general.description'))->searchable(isIndividual: true),
 
                 TextColumn::make('price')->numeric(decimalPlaces: 0)
-                ->label(__('general.price'))->searchable(isIndividual:true),
+                    ->label(__('general.price'))->searchable(isIndividual: true),
 
                 TextColumn::make('dis_price')->default(function ($record) {
                     return $record->dis_price ?: '______';
                 })->numeric(decimalPlaces: 0)
-                ->label(__('general.dis_price'))->searchable(isIndividual:true),
+                    ->label(__('general.dis_price'))->searchable(isIndividual: true),
 
                 ImageColumn::make('image')->label(__('general.image')),
 
-                TextColumn::make('inventory')->label(__('general.inventory'))->searchable(isIndividual:true),
+                TextColumn::make('inventory')->label(__('general.inventory'))->searchable(isIndividual: true),
 
-                TextColumn::make('view_count')->label(__('general.view_count'))->searchable(isIndividual:true),
+                TextColumn::make('view_count')->label(__('general.view_count'))->searchable(isIndividual: true),
 
-                TextColumn::make('created_at')->label(__('general.created_at'))->searchable(isIndividual:true)->jalaliDate(),
+                TextColumn::make('created_at')->label(__('general.created_at'))->searchable(isIndividual: true)->jalaliDate(),
             ])
             ->filters([
                 Filter::make('discount')->label(__('general.has_discount'))
-                ->query(fn (Builder $query): Builder => $query->where('dis_price', '!=', null)),
+                    ->query(fn(Builder $query): Builder => $query->where('dis_price', '!=', null)),
 
                 PriceFilter::make('price')
-                ->min(100)
-                ->max(1000)
-             ])
+                    ->min(100)
+                    ->max(1000)
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make()->button()->color('info'),
                 Tables\Actions\EditAction::make()->button(),
@@ -255,12 +248,12 @@ class ProductResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     ExportBulkAction::make()->exporter(ProductExporter::class)
                 ]),
-              
+
             ]);
     }
-    
 
-    
+
+
     public static function getRelations(): array
     {
         return [

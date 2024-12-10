@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
@@ -8,7 +10,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class CommentMutation
 {
     /** @param  array{}  $args */
-    
+
     public function createComment($root, array $args, GraphQLContext $context)
     {
         $comment = new Comment;
@@ -19,5 +21,5 @@ final class CommentMutation
         $comment->parent = $args['parent'] ?? 0;
         $comment->save();
         return $comment;
-    } 
+    }
 }

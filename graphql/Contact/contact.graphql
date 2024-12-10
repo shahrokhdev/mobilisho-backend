@@ -2,7 +2,7 @@ type Contact {
     id: ID!
     first_name: String!
     last_name: String!
-    email:String!
+    email: String!
     phone_number: String!
     message: String!
     status: String
@@ -13,9 +13,12 @@ extend type Query {
     findContact(id: ID @eq): Contact @find
 }
 
-
-extend type Mutation { 
-
-  createContact(first_name:String!,last_name: String!,email:String!,phone_number: String!,message:String!): Contact
-
+extend type Mutation {
+    createContact(
+        first_name: String!
+        last_name: String!
+        email: String!
+        phone_number: String!
+        message: String!
+    ): Contact
 }

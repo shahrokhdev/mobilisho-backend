@@ -1,6 +1,6 @@
 type Comment {
     id: ID!
-    user_id:Int!
+    user_id: Int!
     user: User!
     commentable: Commentable
     parent: Comment
@@ -20,7 +20,7 @@ extend type Query {
 
 extend type Mutation {
     createComment(
-        user_id:Int
+        user_id: Int
         commentable_id: Int!
         commentable_type: String!
         comment: String!

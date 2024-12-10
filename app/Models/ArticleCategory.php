@@ -11,7 +11,7 @@ class ArticleCategory extends Model
 {
     use HasFactory;
     use HasPersianSlug;
-    protected $fillable = ['parent' ,'name' , 'image'];
+    protected $fillable = ['parent', 'name', 'image'];
 
 
 
@@ -23,7 +23,8 @@ class ArticleCategory extends Model
     }
 
 
-    public function articles() {
-        return $this->hasMany(Article::class,'category_id');
-   }
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'category_id');
+    }
 }

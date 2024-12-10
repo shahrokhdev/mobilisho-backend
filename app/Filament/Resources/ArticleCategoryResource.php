@@ -3,12 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleCategoryResource\Pages;
-use App\Filament\Resources\ArticleCategoryResource\RelationManagers;
 use App\Models\ArticleCategory;
-use Filament\Actions\Action;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,9 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Actions\CreateAction;
+
+
 class ArticleCategoryResource extends Resource
 {
     protected static ?string $model = ArticleCategory::class;
@@ -41,7 +36,7 @@ class ArticleCategoryResource extends Resource
     {
         return __(key: 'general.article-management');
     }
-    
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -51,19 +46,19 @@ class ArticleCategoryResource extends Resource
         return static::getModel()::count() > 5 ? 'primary' : 'warning';
     }
 
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.name")),              
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.name")),
 
-                 FileUpload::make('image')
-                 ->required()
-                 ->label(__('general.image'))
+                FileUpload::make('image')
+                    ->required()
+                    ->label(__('general.image'))
             ]);
     }
 
@@ -74,7 +69,7 @@ class ArticleCategoryResource extends Resource
                 TextColumn::make('name')->label(__('general.name')),
                 ImageColumn::make('image')->label(__('general.image')),
                 TextColumn::make('created_at')->label(__('general.created_at')),
-               TextColumn::make('updated_at')->label(__('general.updated_at')),
+                TextColumn::make('updated_at')->label(__('general.updated_at')),
             ])
             ->filters([
                 //

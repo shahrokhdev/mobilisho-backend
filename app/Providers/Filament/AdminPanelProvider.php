@@ -32,9 +32,9 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
-     /*        ->plugin(FilamentMenuBuilderPlugin::make()) */
+            /*        ->plugin(FilamentMenuBuilderPlugin::make()) */
             ->databaseNotifications()
-           /*  ->userMenuItems([
+            /*  ->userMenuItems([
                MenuItem::make()
                ->url('/settings')
                ->icon('heroicon-o-cog-6-tooth')

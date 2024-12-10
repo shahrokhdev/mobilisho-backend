@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
@@ -9,7 +11,7 @@ final  class IncrementViewCount
     public function incrementView($root, array $args)
     {
         $product = Product::findOrFail($args['id']);
-        $this->incrementValue( $product);
+        $this->incrementValue($product);
         return $product;
     }
 

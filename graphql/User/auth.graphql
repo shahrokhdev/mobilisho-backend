@@ -10,12 +10,10 @@ extend type Mutation {
         username: String!
         email: String!
         password: String
-        phone_number: String! 
+        phone_number: String!
     ): User
         @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@registerUser")
 
-
-     verifyUser(code: String!, phone_number: String!): User  @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@verifyUser")
-
+    verifyUser(code: String!, phone_number: String!): User
+        @field(resolver: "App\\GraphQL\\Mutations\\UserMutation@verifyUser")
 }
- 

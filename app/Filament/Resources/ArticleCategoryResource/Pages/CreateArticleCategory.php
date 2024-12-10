@@ -11,7 +11,8 @@ class CreateArticleCategory extends CreateRecord
 
     protected static string $resource = ArticleCategoryResource::class;
 
-    public function getRedirectUrl(): string { 
-           return $this->getResource()::getURl('index');
+    public function getRedirectUrl(): string
+    {
+        return $this->getResource()::getURl('index');
     }
 }

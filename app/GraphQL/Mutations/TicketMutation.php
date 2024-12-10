@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
@@ -8,15 +10,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 final class TicketMutation
 {
     /** @param  array{}  $args */
-   
+
     public function createTicket($root, array $args, GraphQLContext $context)
     {
-        $user = auth()->loginUsingId(1);   
+        $user = auth()->loginUsingId(1);
         $file = $args['attached_file'];
         $path = $file->storePublicly('public/uploads');
 
         $ticket = SupportTicket::create([
-            'user_id' => $user->id, 
+            'user_id' => $user->id,
             'subject' => $args['subject'],
             'priority' => $args['priority'],
 
@@ -24,7 +26,7 @@ final class TicketMutation
 
         $ticket->messages()->create([
             'ticket_id' => $ticket->id,
-            'user_id' => $user->id, 
+            'user_id' => $user->id,
             'content' => $args['messages'],
             'attached_file' => $path,
         ]);

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Pishran\LaravelPersianSlug\HasPersianSlug;
 use Spatie\Sluggable\SlugOptions;
+
 class Category extends Model
 {
     use HasFactory;
     use HasPersianSlug;
-    
-    protected $fillable = ['parent_id' ,'name' , 'image'];
+
+    protected $fillable = ['parent_id', 'name', 'image'];
 
     public function getSlugOptions(): SlugOptions
     {
@@ -32,7 +33,8 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
-    public function products(){
+    public function products()
+    {
         return $this->belongsToMany(Product::class);
     }
 }

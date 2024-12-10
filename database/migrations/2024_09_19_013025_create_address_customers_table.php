@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('lat');
             $table->string('lng');
             $table->text('description');
-/*             $table->enum('state' , ['']); */
+            /*             $table->enum('state' , ['']); */
             $table->timestamps();
         });
     }

@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ArticleResource\Pages;
-use App\Filament\Resources\ArticleResource\RelationManagers;
 use App\Models\Article;
-use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -16,13 +14,12 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
 
@@ -40,7 +37,7 @@ class ArticleResource extends Resource
         return __(key: 'general.article-management');
     }
 
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
@@ -53,22 +50,22 @@ class ArticleResource extends Resource
         return $form
             ->schema([
                 Select::make('category_id')
-                ->relationship(name:'category' , titleAttribute:'name')
-                 ->label(__("general.categoryName")),     
-                 
+                    ->relationship(name: 'category', titleAttribute: 'name')
+                    ->label(__("general.categoryName")),
+
                 TextInput::make(name: 'title')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.title")),  
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.title")),
 
-                 Textarea::make(name: 'description')
-                ->required()
-                ->maxLength(255)
-                 ->label(__("general.description")),              
+                Textarea::make(name: 'description')
+                    ->required()
+                    ->maxLength(255)
+                    ->label(__("general.description")),
 
-                 FileUpload::make('image')
-                 ->label(__('general.image'))
-                 ->required(),
+                FileUpload::make('image')
+                    ->label(__('general.image'))
+                    ->required(),
             ]);
     }
 
@@ -76,13 +73,13 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                  TextColumn::make('category.name')->label(__('general.categoryName')),
-                  TextColumn::make('title')->label(__('general.title')),
-                  TextColumn::make(name: 'description')->label(__('general.description'))->limit(30),
-                  ImageColumn::make('image')->label(__('general.image')),
-                  TextColumn::make('view_count')->label(__('general.view_count')),
-                  TextColumn::make('created_at')->label(__('general.created_at')),
-                  TextColumn::make('updated_at')->label(__('general.updated_at')),
+                TextColumn::make('category.name')->label(__('general.categoryName')),
+                TextColumn::make('title')->label(__('general.title')),
+                TextColumn::make(name: 'description')->label(__('general.description'))->limit(30),
+                ImageColumn::make('image')->label(__('general.image')),
+                TextColumn::make('view_count')->label(__('general.view_count')),
+                TextColumn::make('created_at')->label(__('general.created_at')),
+                TextColumn::make('updated_at')->label(__('general.updated_at')),
             ])
             ->filters([
                 //

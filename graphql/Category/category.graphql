@@ -6,9 +6,8 @@ type Category {
     image: String!
     keyword: String
     child: [Category!]
-    products:[Product!]!
+    products: [Product!]!
 }
-
 
 extend type Query {
     categories: [Category!]! @all
@@ -17,10 +16,7 @@ extend type Query {
         first: Int = 3
         orderBy: [SubOrderBy!] = [{ column: "most_searched", order: DESC }]
     ): [Category]
-        @orderBy(
-            columns: ["most_searched"]
-            default: "most_searched:desc"
-        )
+        @orderBy(columns: ["most_searched"], default: "most_searched:desc")
 }
 
 input SubOrderBy {
@@ -32,7 +28,3 @@ enum SortOrderEnum {
     ASC
     DESC
 }
-
-
-
-

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('province_id')->default(0);
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('mobile');
             $table->date('birth_date');
-            $table->enum('gender' , ['male' , 'female']);
+            $table->enum('gender', ['male', 'female']);
             $table->timestamps();
         });
     }
