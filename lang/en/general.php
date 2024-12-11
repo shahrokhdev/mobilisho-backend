@@ -132,4 +132,5 @@ return [
     'in_progress' => "in_progress",
     'closed' => "closed",
     'reopened' => "reopened",
+    'all-customer' => 'all customers'
 ];

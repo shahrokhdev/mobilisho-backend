@@ -129,4 +129,5 @@ return [
     'in_progress' => "در جریان",
     'closed' => "بسته شده",
     'reopened' => "بازگشایی",
+    'all-customer' => 'همه ی مشتریان'
 ];
