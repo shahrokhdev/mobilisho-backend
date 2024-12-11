@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Exports\CopenExporter;
 use App\Filament\Resources\CopenResource\Pages;
 use App\Models\Copen;
+use App\Models\Customer;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -56,7 +57,10 @@ class CopenResource extends Resource
         return $form
             ->schema([
                 Select::make('customer_id')
-                    ->relationship('customers', 'name')
+                    ->options(function () {
+                        $customers = Customer::pluck('name', 'id')->toArray();
+                        return ['all' => __('general.all-customer')] + $customers;
+                    })
                     ->multiple()
                     ->preload()
                     ->label(__('general.customer')),
