@@ -108,10 +108,6 @@ class CopenResource extends Resource
     {
         return $table
             ->columns([
-                /*  TextColumn::make('customer.name')
-                  ->searchable(isIndividual:true)
-                  ->label(__('general.full_name')), */
-
                 TextColumn::make('code')
                     ->searchable(isIndividual: true)
                     ->label(__('general.code')),
