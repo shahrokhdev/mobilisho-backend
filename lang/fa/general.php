@@ -32,6 +32,7 @@ return [
     'title' => "عنوان",
     'description' => "توضیحات",
     'price' => "قیمت ( تومان )",
+    "percent" => "درصد",
     'unit_price' => "قیمت واحد( تومان )",
     'inventory' => "تعداد موجود در انبار",
     'view_count' => "تعداد بازدید",

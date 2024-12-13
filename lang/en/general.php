@@ -32,6 +32,7 @@ return [
     'title' => "title",
     'description' => "description",
     'price' => "price",
+    "percent" => "percent",
     'unit_price' => "unit price",
     'inventory' => "inventory",
     'view_count' => "view_count",

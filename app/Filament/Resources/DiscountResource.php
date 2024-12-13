@@ -59,9 +59,9 @@ class DiscountResource extends Resource
 
                 Select::make('discount_type')
                     ->options([
-                        'percent' => 'percent',
-                        'price' => 'price',
-                    ])->label(__(key: "general.state")),
+                        'percent' => __("general.percent"),
+                        'price' => __("general.price"),
+                    ])->label(__(key: "general.discount_type")),
 
 
                 TextInput::make('discount_value')->required()
