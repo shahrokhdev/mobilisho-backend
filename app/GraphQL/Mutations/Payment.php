@@ -21,44 +21,48 @@ final class Payment
 
   public function payment($root, array $args, GraphQLContext $context)
   {
-    /*  if (!Auth::check())
+    $user = Auth::user();
+    dd($user);
+    /* if (!Auth::check())
       {
         throw new \Exception("User is not authenticated."); 
        } */
-    $customer_id = 2;
+    /*     $customer_id = 2; */
     $cartData = $args['cartData'];
     $userCode = $args['copen_code'] ?? null;
     $totalPrice = 0;
     $finalPrice = 0;
 
+    if ($user)
 
-    foreach ($cartData as $item) {
-      $product = Product::find($item['id']);
-      $order = Order::create(['order_date' => now(), 'customer_id' => 2, 'total_amount' => $totalPrice, 'final_price' => $finalPrice]);
 
-      $order->products()->attach(
-        $item['id'],
-        [
-          'quantity' => $item['quantity'],
-          'price' => $item['price'],
-        ]
-      );
+      foreach ($cartData as $item) {
+        $product = Product::find($item['id']);
+        $order = Order::create(['order_date' => now(), 'customer_id' => 2, 'total_amount' => $totalPrice, 'final_price' => $finalPrice]);
 
-      $product->inventory -= $item['quantity'];
-      if ($product->inventory < 0)
-        $product->inventory = 0;
+        $order->products()->attach(
+          $item['id'],
+          [
+            'quantity' => $item['quantity'],
+            'price' => $item['price'],
+          ]
+        );
 
-      $product->save();
+        $product->inventory -= $item['quantity'];
+        if ($product->inventory < 0)
+          $product->inventory = 0;
 
-      if (!$product) {
-        throw new \Exception("Product with ID {$item['id']} does not exist.");
-      }
+        $product->save();
 
-      if ($item['quantity'] > $product->inventory) {
-        throw new \Exception("Product with ID {$item['id']}does not have sufficient stock.");
-      }
+        if (!$product) {
+          throw new \Exception("Product with ID {$item['id']} does not exist.");
+        }
 
-      /* foreach ($item['attributes'] as $attributeName => $attributeValue) 
+        if ($item['quantity'] > $product->inventory) {
+          throw new \Exception("Product with ID {$item['id']}does not have sufficient stock.");
+        }
+
+        /* foreach ($item['attributes'] as $attributeName => $attributeValue) 
                {
                  return $attributeName;
                  $attribute = Attribute::where('name', $attributeName)->first(); 
@@ -71,11 +75,11 @@ final class Payment
                    } 
                 } */
 
-      $price = $product->dis_price ?? $product->price;
+        $price = $product->dis_price ?? $product->price;
 
 
-      $totalPrice += $price * $item['quantity'];
-    }
+        $totalPrice += $price * $item['quantity'];
+      }
 
     $discountAmount = 0;
     if ($userCode) {

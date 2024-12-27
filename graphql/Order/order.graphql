@@ -29,5 +29,5 @@ extend type Mutation {
         copen_reason: String
         final_price: String
         star: String
-    ): Order
+    ): String
 }

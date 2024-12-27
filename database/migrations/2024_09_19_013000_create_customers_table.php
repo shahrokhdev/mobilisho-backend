@@ -20,10 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('town_id')->default(0);
             $table->string('name');
             $table->string('family');
-            $table->string('image');
-            $table->string('mobile');
-            $table->date('birth_date');
-            $table->enum('gender', ['male', 'female']);
+            $table->string('image')->nullable();
+            $table->string('mobile')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->timestamps();
         });
     }
