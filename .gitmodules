@@ -1,0 +1,3 @@
+[submodule "vendor/anourvalar/eloquent-serialize"]
+	path = vendor/anourvalar/eloquent-serialize
+	url = git@github.com:shahrokhdev/mobilisho-backend.git
