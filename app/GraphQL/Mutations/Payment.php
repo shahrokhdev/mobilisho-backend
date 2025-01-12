@@ -23,6 +23,7 @@ final class Payment
   {
     $user = Auth::user();
     dd($user);
+    
     /* if (!Auth::check())
       {
         throw new \Exception("User is not authenticated."); 
