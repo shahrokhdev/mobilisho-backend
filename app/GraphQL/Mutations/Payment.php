@@ -34,8 +34,6 @@ final class Payment
     $finalPrice = 0;
 
     if ($user)
-
-
       foreach ($cartData as $item) {
         $product = Product::find($item['id']);
         $order = Order::create(['order_date' => now(), 'customer_id' => 2, 'total_amount' => $totalPrice, 'final_price' => $finalPrice]);
