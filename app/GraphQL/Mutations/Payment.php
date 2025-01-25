@@ -21,15 +21,15 @@ final class Payment
 
   public function payment($root, array $args, GraphQLContext $context)
   {
-    $user = Auth::user();
-    dd($user);
-    
+/*     $user = Auth::user();
+       dd($user); */
+
     /* if (!Auth::check())
       {
         throw new \Exception("User is not authenticated."); 
        } */
     /*     $customer_id = 2; */
-    $cartData = $args['cartData'];
+    /*  $cartData = $args['cartData'];
     $userCode = $args['copen_code'] ?? null;
     $totalPrice = 0;
     $finalPrice = 0;
@@ -59,9 +59,9 @@ final class Payment
 
         if ($item['quantity'] > $product->inventory) {
           throw new \Exception("Product with ID {$item['id']}does not have sufficient stock.");
-        }
+        } */
 
-        /* foreach ($item['attributes'] as $attributeName => $attributeValue) 
+    /* foreach ($item['attributes'] as $attributeName => $attributeValue) 
                {
                  return $attributeName;
                  $attribute = Attribute::where('name', $attributeName)->first(); 
@@ -74,13 +74,13 @@ final class Payment
                    } 
                 } */
 
-        $price = $product->dis_price ?? $product->price;
+    /*    $price = $product->dis_price ?? $product->price;
 
 
-        $totalPrice += $price * $item['quantity'];
-      }
+        $totalPrice += $price * $item['quantity']; */
+  }
 
-    $discountAmount = 0;
+  /*  $discountAmount = 0;
     if ($userCode) {
       $code = Copen::query()->where('code', $userCode)
         ->where('state', 'unexpire')
@@ -98,9 +98,9 @@ final class Payment
       $finalPrice = $totalPrice;
 
     return $this->copenValidation($code, $userCode, $order, $finalPrice);
-  }
+  } */
 
-  public function copenValidation($code, $userCode, $order, $disPrice)
+  /*   public function copenValidation($code, $userCode, $order, $disPrice)
   {
     $customer = Customer::find($order->customer_id);
 
@@ -129,5 +129,5 @@ final class Payment
         }
       }
     }
-  }
+  }*/
 }
