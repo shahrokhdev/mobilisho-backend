@@ -137,7 +137,8 @@ class ProductResource extends Resource
                     ->schema([
                         Repeater::make('properties')
                             ->afterStateHydrated(function (Component $component, $livewire, $context) {
-                                if ($context !== "create") {
+
+                                if ($context == "edit") {
                                     $ar = [];
                                     $attrs = $livewire->record->attributes->toArray();
 
